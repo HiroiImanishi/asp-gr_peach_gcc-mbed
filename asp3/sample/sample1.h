@@ -5,10 +5,10 @@
  *
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
- *  Copyright (C) 2004-2010 by Embedded and Real-Time Systems Laboratory
+ *  Copyright (C) 2004-2016 by Embedded and Real-Time Systems Laboratory
  *              Graduate School of Information Science, Nagoya Univ., JAPAN
  *
- *  上記著作権者は，以下の(1)～(4)の条件を満たす場合に限り，本ソフトウェ
+ *  上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
  *  ア（本ソフトウェアを改変したものを含む．以下同じ）を使用・複製・改
  *  変・再配布（以下，利用と呼ぶ）することを無償で許諾する．
  *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
@@ -37,13 +37,15 @@
  *  アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
  *  の責任を負わない．
  *
- *  $Id: sample1.h 2728 2015-12-30 01:46:11Z ertl-honda $
+ *  $Id: sample1.h 705 2016-03-29 14:16:41Z ertl-hiro $
  */
 
 /*
  *		サンプルプログラム(1)のヘッダファイル
  */
+
 #include <kernel.h>
+
 /*
  *  ターゲット依存の定義
  */
@@ -52,6 +54,7 @@
 /*
  *  各タスクの優先度の定義
  */
+
 #define EXC_PRIORITY	1		/* 例外処理タスクの優先度 */
 #define MAIN_PRIORITY	5		/* メインタスクの優先度 */
 								/* HIGH_PRIORITYより高くすること */
@@ -73,11 +76,9 @@
 #endif /* STACK_SIZE */
 
 #ifndef LOOP_REF
-#define LOOP_REF		ULONG_C(100000)	/* 速度計測用のループ回数 */
+#define LOOP_REF		ULONG_C(1000000)	/* 速度計測用のループ回数 */
 #endif /* LOOP_REF */
-#ifndef TASK_LOOP
-#define TASK_LOOP 		10000
-#endif	/* TASK_LOOP*/
+
 /*
  *  関数のプロトタイプ宣言
  */
@@ -86,7 +87,6 @@
 extern void	task(intptr_t exinf);
 extern void	main_task(intptr_t exinf);
 extern void exc_task(intptr_t exinf);
-//extern void	tex_routine(TEXPTN texptn, intptr_t exinf);		
 #ifdef INTNO1
 extern void intno1_isr(intptr_t exinf);
 #endif /* INTNO1 */

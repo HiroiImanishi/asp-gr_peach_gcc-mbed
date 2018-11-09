@@ -39,7 +39,8 @@ MPCORE_TYPE = CA9
 INCLUDES := $(INCLUDES) -I$(TARGETDIR)
 COPTS := $(COPTS) -mlittle-endian
 LDFLAGS := $(LDFLAGS) -mlittle-endian
-
+CFG1_OUT_LDFLAGS := -nostdlib $(CFG1_OUT_LDFLAGS)
+CDEFS := $(CDEFS) -DTOPPERS_RZA1H
 #
 #  カーネルに関する定義
 #
@@ -52,10 +53,10 @@ KERNEL_ASMOBJS := $(KERNEL_ASMOBJS) target_support.o
 #
 ifeq ($(EXECUTE_ON),ROM)
 	CDEFS := $(CDEFS) -DTOPPERS_EXECUTE_ON_ROM
-	LDSCRIPT = $(TARGETDIR)/gr_peach_rom.ld
+#	LDSCRIPT = $(TARGETDIR)/gr_peach_rom.ld
 else
 	CDEFS := $(CDEFS) -DTOPPERS_EXECUTE_ON_RAM
-	LDSCRIPT = $(TARGETDIR)/gr_peach_ram.ld
+#	LDSCRIPT = $(TARGETDIR)/gr_peach_ram.ld
 endif
 
 #

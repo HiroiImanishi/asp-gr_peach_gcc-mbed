@@ -214,9 +214,9 @@ end
 #  変数のデフォルト値
 #
 if $appldirs.empty?
-  $appldirs.push("\$(SRCDIR)/blinky_copy")
+  $appldirs.push("\$(SRCDIR)/sample")
 end
-$applname ||= "blinky_copy1"
+$applname ||= "sample1"
 if $option_t.nil?
   $applobjs.unshift($applname + ".o")
 end
@@ -235,7 +235,7 @@ if /^\// =~ $srcdir
 else
   $srcabsdir = Shell.new.cwd + "/" + $srcdir
 end
-$tempmakefile ||= $srcdir + "/blinky_copy/Makefile"
+$tempmakefile ||= $srcdir + "/sample/Makefile"
 $cfg ||= $ruby + " \$(SRCDIR)/cfg/cfg.rb"
 $tecsdir ||= "\$(SRCDIR)/tecsgen"
 $tecsgen ||= $ruby + " \$(TECSDIR)/tecsgen.rb"

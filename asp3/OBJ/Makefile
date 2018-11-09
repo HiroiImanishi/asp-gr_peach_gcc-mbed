@@ -176,18 +176,18 @@ CFLAGS = $(COPTS) $(CDEFS) $(INCLUDES)
 #
 #  アプリケーションプログラムに関する定義
 #
-APPLNAME = blinky_copy1
-APPLDIRS = $(SRCDIR)/blinky_copy
-APPL_CFG = blinky_copy1.cfg
-APPL_CDL = blinky_copy1.cdl
+APPLNAME = sample1
+APPLDIRS = $(SRCDIR)/sample
+APPL_CFG = sample1.cfg
+APPL_CDL = sample1.cdl
 
 APPL_DIRS := $(APPLDIRS) $(SRCDIR)/library
 APPL_ASMOBJS :=
 ifdef USE_CXX
-	APPL_CXXOBJS := blinky_copy1.o
+	APPL_CXXOBJS := sample1.o
 	APPL_COBJS :=
 else
-	APPL_COBJS := blinky_copy1.o
+	APPL_COBJS := sample1.o
 endif
 APPL_COBJS := $(APPL_COBJS) log_output.o vasyslog.o t_perror.o strerror.o
 APPL_CFLAGS := $(APPL_CFLAGS)

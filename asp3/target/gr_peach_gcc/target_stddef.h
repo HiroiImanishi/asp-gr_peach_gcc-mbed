@@ -52,7 +52,7 @@
  *  ターゲットを識別するためのマクロの定義
  */
 #define TOPPERS_GR_PEACH				/* システム略称 */
-#define TOPPERS_RZA1H					/* RZ/A1H */
+/*#define TOPPERS_RZA1H		*/			/* RZ/A1H */
 
 /*
  *  開発環境で共通な定義
@@ -62,12 +62,12 @@
 #endif /* TOPPERS_MACRO_ONLY */
 
 #define TOPPERS_STDFLOAT_TYPE1
-#include "tool_stddef.h"
+#include "../../arch/gcc/tool_stddef.h"
 
 /*
  *  チッブで共通な定義
  */
-#include "chip_stddef.h"
+#include "../../arch/arm_gcc/rza1/chip_stddef.h"
 
 /*
  *  アサーションの失敗時の実行中断処理

@@ -5,10 +5,10 @@
  * 
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
- *  Copyright (C) 2004-2012 by Embedded and Real-Time Systems Laboratory
+ *  Copyright (C) 2004-2018 by Embedded and Real-Time Systems Laboratory
  *              Graduate School of Information Science, Nagoya Univ., JAPAN
  * 
- *  上記著作権者は，以下の(1)～(4)の条件を満たす場合に限り，本ソフトウェ
+ *  上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
  *  ア（本ソフトウェアを改変したものを含む．以下同じ）を使用・複製・改
  *  変・再配布（以下，利用と呼ぶ）することを無償で許諾する．
  *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
@@ -37,7 +37,7 @@
  *  アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
  *  の責任を負わない．
  * 
- *  $Id: sample1.c 2728 2015-12-30 01:46:11Z ertl-honda $
+ *  $Id: sample1.c 945 2018-04-18 00:40:22Z ertl-hiro $
  */
 
 /* 
@@ -49,7 +49,7 @@
  *
  *  ユーザインタフェースを受け持つメインタスク（タスクID: MAIN_TASK，優
  *  先度: MAIN_PRIORITY）と，3つの並行実行されるタスク（タスクID:
- *  TASK1～TASK3，初期優先度: MID_PRIORITY）で構成される．また，起動周
+ *  TASK1〜TASK3，初期優先度: MID_PRIORITY）で構成される．また，起動周
  *  期が2秒の周期ハンドラ（周期ハンドラID: CYCHDR1）を用いる．
  *
  *  並行実行されるタスクは，task_loop回空ループを実行する度に，タスクが
@@ -87,10 +87,9 @@
  *  'u' : 対象タスクをsus_tskにより強制待ち状態にする．
  *  'm' : 対象タスクの強制待ち状態をrsm_tskにより解除する．
  *  'd' : 対象タスクにdly_tsk(10秒)を呼び出させ，時間経過待ちにさせる．
- *  'x' : 対象タスクに例外パターン0x0001の例外処理を要求する．
- *  'X' : 対象タスクに例外パターン0x0002の例外処理を要求する．
- *  'y' : 対象タスクにdis_texを呼び出させ，タスク例外を禁止する．
- *  'Y' : 対象タスクにena_texを呼び出させ，タスク例外を許可する．
+ *  'x' : 対象タスクにras_terにより終了要求する．
+ *  'y' : 対象タスクにdis_terを呼び出させ，タスク終了を禁止する．
+ *  'Y' : 対象タスクにena_terを呼び出させ，タスク終了を許可する．
  *  'r' : 3つの優先度（HIGH_PRIORITY，MID_PRIORITY，LOW_PRIORITY）のレ
  *        ディキューを回転させる．
  *  'c' : 周期ハンドラを動作開始させる．
@@ -100,7 +99,7 @@
  *  'z' : 対象タスクにCPU例外を発生させる（タスクを終了させる）．
  *  'Z' : 対象タスクにCPUロック状態でCPU例外を発生させる（プログラムを
  *        終了する）．
- *  'V' : get_utmで性能評価用システム時刻を2回読む．
+ *  'V' : fch_hrtで高分解能タイマを2回読む．
  *  'v' : 発行したシステムコールを表示する（デフォルト）．
  *  'q' : 発行したシステムコールを表示しない．
  */
@@ -135,7 +134,6 @@ char	message[3];
  *  ループ回数
  */
 ulong_t	task_loop;		/* タスク内でのループ回数 */
-//ulong_t	tex_loop;		/* 例外処理ルーチン内でのループ回数 */
 
 /*
  *  並行実行されるタスク
@@ -148,7 +146,6 @@ void task(intptr_t exinf)
 	const char	*graph[] = { "|", "  +", "    *" };
 	char		c;
 
-	//SVC_PERROR(ena_tex());
 	while (true) {
 		syslog(LOG_NOTICE, "task%d is running (%03d).   %s",
 										tskno, ++n, graph[tskno-1]);
@@ -166,11 +163,11 @@ void task(intptr_t exinf)
 			break;
 		case 'S':
 			syslog(LOG_INFO, "#%d#tslp_tsk(10000000)", tskno);
-			SVC_PERROR(tslp_tsk(10000));
+			SVC_PERROR(tslp_tsk(10000000));
 			break;
 		case 'd':
 			syslog(LOG_INFO, "#%d#dly_tsk(10000000)", tskno);
-			SVC_PERROR(dly_tsk(10000));
+			SVC_PERROR(dly_tsk(10000000));
 			break;
 		case 'y':
 			syslog(LOG_INFO, "#%d#dis_ter()", tskno);
@@ -212,37 +209,17 @@ void intno1_isr(intptr_t exinf)
 }
 
 #endif /* INTNO1 */
-/*
- *  並行して実行されるタスク用のタスク例外処理ルーチン,ASP3から廃止
- */
-/*
-void tex_routine(TEXPTN texptn, intptr_t exinf)
-{
-	volatile ulong_t	i;
-	int_t	tskno = (int_t) exinf;
-
-	syslog(LOG_NOTICE, "task%d receives exception 0x%04x.", tskno, texptn);
-	for (i = 0; i < tex_loop; i++);
-
-	if ((texptn & 0x8000U) != 0U) {
-		syslog(LOG_INFO, "#%d#ext_tsk()", tskno);
-		SVC_PERROR(ext_tsk());
-		assert(0);
-	}
-}
-*/
 
 /*
  *  CPU例外ハンドラ
  */
 ID	cpuexc_tskid;		/* CPU例外を起こしたタスクのID */
+
 #ifdef CPUEXC1
 
 void
 cpuexc_handler(void *p_excinf)
 {
-	ID		tskid;
-
 	syslog(LOG_NOTICE, "CPU exception handler (p_excinf = %08p).", p_excinf);
 	if (sns_ctx() != true) {
 		syslog(LOG_WARNING,
@@ -253,19 +230,23 @@ cpuexc_handler(void *p_excinf)
 					"sns_dpn() is not true in CPU exception handler.");
 	}
 	syslog(LOG_INFO, "sns_loc = %d sns_dsp = %d xsns_dpn = %d",
-									sns_loc(), sns_dsp(), xsns_dpn(p_excinf));
-	/*
-	syslog(LOG_INFO, "xsns_dpn = %d xsns_xpn = %d",
-									xsns_dpn(p_excinf), xsns_xpn(p_excinf));
-	*/
+								sns_loc(), sns_dsp(), xsns_dpn(p_excinf));
+
 	if (xsns_dpn(p_excinf)) {
 		syslog(LOG_NOTICE, "Sample program ends with exception.");
 		SVC_PERROR(ext_ker());
 		assert(0);
 	}
 
-	SVC_PERROR(iget_tid(&tskid));
-	//SVC_PERROR(iras_tex(tskid, 0x8000U));		//タスク例外処理機能はASP3より廃止
+#ifdef PREPARE_RETURN_CPUEXC
+	PREPARE_RETURN_CPUEXC;
+	SVC_PERROR(get_tid(&cpuexc_tskid));
+	SVC_PERROR(act_tsk(EXC_TASK));
+#else /* PREPARE_RETURN_CPUEXC */
+	syslog(LOG_NOTICE, "Sample program ends with exception.");
+	SVC_PERROR(ext_ker());
+	assert(0);
+#endif /* PREPARE_RETURN_CPUEXC */
 }
 
 #endif /* CPUEXC1 */
@@ -278,9 +259,9 @@ cpuexc_handler(void *p_excinf)
  */
 void cyclic_handler(intptr_t exinf)
 {
-	SVC_PERROR(irot_rdq(HIGH_PRIORITY));
-	SVC_PERROR(irot_rdq(MID_PRIORITY));
-	SVC_PERROR(irot_rdq(LOW_PRIORITY));
+	SVC_PERROR(rot_rdq(HIGH_PRIORITY));
+	SVC_PERROR(rot_rdq(MID_PRIORITY));
+	SVC_PERROR(rot_rdq(LOW_PRIORITY));
 }
 
 /*
@@ -291,17 +272,33 @@ void cyclic_handler(intptr_t exinf)
  */
 void alarm_handler(intptr_t exinf)
 {
-	SVC_PERROR(irot_rdq(HIGH_PRIORITY));
-	SVC_PERROR(irot_rdq(MID_PRIORITY));
-	SVC_PERROR(irot_rdq(LOW_PRIORITY));
+	SVC_PERROR(rot_rdq(HIGH_PRIORITY));
+	SVC_PERROR(rot_rdq(MID_PRIORITY));
+	SVC_PERROR(rot_rdq(LOW_PRIORITY));
 }
 
 /*
- *  ASP3から追加した例外処理タスク
+ *  例外処理タスク
  */
 void exc_task(intptr_t exinf)
 {
 	SVC_PERROR(ras_ter(cpuexc_tskid));
+}
+
+/*
+ *  プロセッサ時間の消費
+ */
+#define NO_LOOP_CONSUME_TIME	256
+
+static volatile int_t	array[NO_LOOP_CONSUME_TIME];
+
+static void consume_time(void)
+{
+	int_t	i;
+
+	for (i = 0; i < NO_LOOP_CONSUME_TIME; i++) {
+		array[i] = i;
+	}
 }
 
 /*
@@ -318,9 +315,7 @@ void main_task(intptr_t exinf)
 	volatile ulong_t	i;
 	SYSTIM	stime1, stime2;
 #endif /* TASK_LOOP */
-#ifdef TOPPERS_SUPPORT_GET_UTM
-	SYSUTM	utime1, utime2;
-#endif /* TOPPERS_SUPPORT_GET_UTM */
+	HRTCNT	hrtcnt1, hrtcnt2;
 
 	SVC_PERROR(syslog_msk_log(LOG_UPTO(LOG_INFO), LOG_UPTO(LOG_EMERG)));
 	syslog(LOG_NOTICE, "Sample program starts (exinf = %d).", (int_t) exinf);
@@ -366,10 +361,6 @@ void main_task(intptr_t exinf)
 	 * りも長めになるものがある．このようなターゲットでは，MEASURE_TWICE
 	 * をマクロ定義することで，1回目の測定結果を捨てて，2回目の測定結果
 	 * を使う．
-	 *
-	 *  タスク例外処理ルーチン内での空ループの回数（tex_loop）は，
-	 *  task_loopの4分の1の値（空ループの実行時間が0.1秒になるループ回
-	 *  数）に設定する．
 	 */
 #ifdef TASK_LOOP
 	task_loop = TASK_LOOP;
@@ -386,10 +377,9 @@ void main_task(intptr_t exinf)
 	SVC_PERROR(get_tim(&stime1));
 	for (i = 0; i < task_loop; i++);
 	SVC_PERROR(get_tim(&stime2));
-	task_loop = LOOP_REF * 400UL / (stime2 - stime1);
+	task_loop = LOOP_REF * 400LU / (ulong_t)(stime2 - stime1) * 1000LU;
 
 #endif /* TASK_LOOP */
-//	tex_loop = task_loop / 4;
 
 	/*
  	 *  タスクの起動
@@ -484,11 +474,7 @@ void main_task(intptr_t exinf)
 			SVC_PERROR(rsm_tsk(tskid));
 			break;
 		case 'x':
-			syslog(LOG_INFO, "#ras_ter(%d, 0x0001U)", tskno);
-			SVC_PERROR(ras_ter(tskid));
-			break;
-		case 'X':
-			syslog(LOG_INFO, "#ras_ter(%d, 0x0002U)", tskno);
+			syslog(LOG_INFO, "#ras_ter(%d)", tskno);
 			SVC_PERROR(ras_ter(tskid));
 			break;
 		case 'r':
@@ -498,31 +484,28 @@ void main_task(intptr_t exinf)
 			SVC_PERROR(rot_rdq(LOW_PRIORITY));
 			break;
 		case 'c':
-			syslog(LOG_INFO, "#sta_cyc(1)");
+			syslog(LOG_INFO, "#sta_cyc(CYCHDR1)");
 			SVC_PERROR(sta_cyc(CYCHDR1));
 			break;
 		case 'C':
-			syslog(LOG_INFO, "#stp_cyc(1)");
+			syslog(LOG_INFO, "#stp_cyc(CYCHDR1)");
 			SVC_PERROR(stp_cyc(CYCHDR1));
 			break;
 		case 'b':
-			syslog(LOG_INFO, "#sta_alm(1, 5000)");
+			syslog(LOG_INFO, "#sta_alm(ALMHDR1, 5000000)");
 			SVC_PERROR(sta_alm(ALMHDR1, 5000000));
 			break;
 		case 'B':
-			syslog(LOG_INFO, "#stp_alm(1)");
+			syslog(LOG_INFO, "#stp_alm(ALMHDR1)");
 			SVC_PERROR(stp_alm(ALMHDR1));
 			break;
 
 		case 'V':
-#ifdef TOPPERS_SUPPORT_GET_UTM
-			SVC_PERROR(get_utm(&utime1));
-			SVC_PERROR(get_utm(&utime2));
-			syslog(LOG_NOTICE, "utime1 = %ld, utime2 = %ld",
-										(ulong_t) utime1, (ulong_t) utime2);
-#else /* TOPPERS_SUPPORT_GET_UTM */
-			syslog(LOG_NOTICE, "get_utm is not supported.");
-#endif /* TOPPERS_SUPPORT_GET_UTM */
+			hrtcnt1 = fch_hrt();
+			consume_time();
+			hrtcnt2 = fch_hrt();
+			syslog(LOG_NOTICE, "hrtcnt1 = %tu, hrtcnt2 = %tu",
+										hrtcnt1, hrtcnt2);
 			break;
 
 		case 'v':
@@ -533,21 +516,6 @@ void main_task(intptr_t exinf)
 			SVC_PERROR(syslog_msk_log(LOG_UPTO(LOG_NOTICE),
 										LOG_UPTO(LOG_EMERG)));
 			break;
-
-#ifdef BIT_KERNEL
-		case ' ':
-			SVC_PERROR(loc_cpu());
-			{
-				extern ER	bit_kernel(void);
-
-				SVC_PERROR(ercd = bit_kernel());
-				if (ercd >= 0) {
-					syslog(LOG_NOTICE, "bit_kernel passed.");
-				}
-			}
-			SVC_PERROR(unl_cpu());
-			break;
-#endif /* BIT_KERNEL */
 
 		default:
 			break;

@@ -16,7 +16,7 @@
  * CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
  */
     .syntax unified
-    .extern _start
+    .extern start
     .extern _kernel_irq_handler
  
 @ Standard definitions of mode bits and interrupt (I & F) flags in PSRs
@@ -266,7 +266,7 @@ goToSleep:
     adds    r3, #8
     b       .L_loop2
 .L_loop2_done:
-    ldr     r0, =_start
+    ldr     r0, =start
     bx      r0
 
     ldr     r0, sf_boot     @ dummy to keep boot loader area

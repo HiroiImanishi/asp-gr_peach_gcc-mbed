@@ -52,6 +52,6 @@
 /*
  *  チップで共通な定義
  */
-#include "chip_kernel.h"
+#include "../../arch/arm_gcc/rza1/chip_kernel.h"
 
 #endif /* TOPPERS_TARGET_KERNEL_H */

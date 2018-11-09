@@ -5,7 +5,7 @@ PROVIDE(software_init_hook = 0);
 PROVIDE(hardware_init_hook = 0);
 PROVIDE(software_term_hook = 0);
 
-PROVIDE(IRQTable = _kernel_inh_tbl);
+PROVIDE(IRQTable = _kernel_inh_table);
 PROVIDE(IRQNestLevel = _kernel_excpt_nest_count);
 
 /* Linker script to configure memory regions. */
