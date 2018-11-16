@@ -5,10 +5,10 @@
 # 
 #  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
 #                              Toyohashi Univ. of Technology, JAPAN
-#  Copyright (C) 2006-2014 by Embedded and Real-Time Systems Laboratory
+#  Copyright (C) 2006-2018 by Embedded and Real-Time Systems Laboratory
 #              Graduate School of Information Science, Nagoya Univ., JAPAN
 # 
-#  上記著作権者は，以下の(1)～(4)の条件を満たす場合に限り，本ソフトウェ
+#  上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
 #  ア（本ソフトウェアを改変したものを含む．以下同じ）を使用・複製・改
 #  変・再配布（以下，利用と呼ぶ）することを無償で許諾する．
 #  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
@@ -37,7 +37,7 @@
 #  アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
 #  の責任を負わない．
 # 
-#  $Id: Makefile 2728 2015-12-30 01:46:11Z ertl-honda $
+#  $Id: Makefile 935 2018-04-07 09:23:40Z ertl-hiro $
 # 
 
 #
@@ -51,22 +51,22 @@ all:
 TARGET = gr_peach_gcc
 
 #
-#  プログラミング言語の定義
+#  プログラミング言語の定義(check)
 #
 SRCLANG = c++
 ifeq ($(SRCLANG),c)
-  LIBS = -lc
+	LIBS = -lc
 endif
 ifeq ($(SRCLANG),c++)
-  USE_CXX = true
-#  CXXLIBS = -lstdc++ -lm -lc
-#  CXXRTS = cxxrt.o newlibrt.o
+	USE_CXX = true
+#	CXXLIBS = -lstdc++ -lm -lc
+#	CXXRTS = cxxrt.o newlibrt.o
 endif
 
 #
 #  ソースファイルのディレクトリの定義
 #
-# SRCDIR = ..
+# SRCDIR = ../../asp3
 
 #
 #  オブジェクトファイル名の拡張子の設定
@@ -78,15 +78,10 @@ OBJEXT = elf
 endif
 
 #
-#  実行環境の定義（ターゲット依存に上書きされる場合がある）
-#
-DBGENV := 
-
-#
 #  カーネルライブラリ（libkernel.a）のディレクトリ名
 #  （カーネルライブラリもmake対象にする時は，空に定義する）
 #
-# KERNEL_LIB =
+# KERNEL_LIB = 
 
 #
 #  カーネルを関数単位でコンパイルするかどうかの定義
@@ -94,30 +89,47 @@ DBGENV :=
 KERNEL_FUNCOBJS = 
 
 #
+#  TECSを外すかどうかの定義
+#
+OMIT_TECS = 
+
+#
+#  TECS関係ファイルのディレクトリの定義
+#
+TECSDIR = $(SRCDIR)/tecsgen
+
+#
 #  トレースログを取得するかどうかの定義
 #
 ENABLE_TRACE = 
 
-#EXECUTE_ON = RAM
-#EXECUTE_ON = ROM
+#
+#  開発ツール（コンパイラ等）のディレクトリの定義
+#
+DEVTOOLDIR = 
 
 #
 #  ユーティリティプログラムの名称
 #
-PERL = /usr/bin/perl
-CFG = $(SRCDIR)/cfg/cfg/cfg
+CFG = ruby $(SRCDIR)/cfg/cfg.rb
+TECSGEN = ruby $(TECSDIR)/tecsgen.rb
 
 #
 #  オブジェクトファイル名の定義
 #
 OBJNAME = asp
 ifdef OBJEXT
-  OBJFILE = $(OBJNAME).$(OBJEXT)
-  CFG1_OUT = cfg1_out.$(OBJEXT)
+	OBJFILE = $(OBJNAME).$(OBJEXT)
+	CFG1_OUT = cfg1_out.$(OBJEXT)
 else
-  OBJFILE = $(OBJNAME)
-  CFG1_OUT = cfg1_out
+	OBJFILE = $(OBJNAME)
+	CFG1_OUT = cfg1_out
 endif
+
+#
+#  依存関係ファイルを置くディレクトリの定義
+#
+DEPDIR = deps
 
 #
 #  ターゲット依存部のディレクトリの定義
@@ -130,66 +142,103 @@ TARGETDIR = $(SRCDIR)/target/$(TARGET)
 include $(TARGETDIR)/Makefile.target
 
 #
-#  コンフィギュレータ関係の変数の定義
+#  TECS生成ファイルのディレクトリの定義
 #
-CFG_TABS := --api-table $(SRCDIR)/kernel/kernel_api.csv \
-			--cfg1-def-table $(SRCDIR)/kernel/kernel_def.csv $(CFG_TABS)
-
-CFG_ASMOBJS := $(CFG_ASMOBJS)
-CFG_COBJS := kernel_cfg.o $(CFG_COBJS)
-CFG_OBJS := $(CFG_ASMOBJS) $(CFG_COBJS)
-CFG2_OUT_SRCS := kernel_cfg.h kernel_cfg.c $(CFG2_OUT_SRCS)
+TECSGENDIR = ./gen
+ifndef OMIT_TECS
+	TECSGEN_TIMESTAMP = $(TECSGENDIR)/tecsgen.timestamp
+	INIT_TECS_COBJ = init_tecs.o
+endif
 
 #
-#  共通コンパイルオプションの定義
+#  TECSが生成する定義のインクルード
+#
+ifndef OMIT_TECS
+	GEN_DIR = $(TECSGENDIR)
+	-include $(TECSGENDIR)/Makefile.tecsgen
+endif
+
+#
+#  共通コンパイルオプションの定義(check)
 #
 COPTS := $(COPTS) -g -O0 -ggdb
 ifndef OMIT_WARNING_ALL
-  COPTS := $(COPTS) -Wall
+	COPTS := $(COPTS) -Wall
 endif
 ifndef OMIT_OPTIMIZATION
-  COPTS := $(COPTS) -O2
+	COPTS := $(COPTS) -O2 
+endif
+ifdef OMIT_TECS
+	CDEFS := -DTOPPERS_OMIT_TECS $(CDEFS)
 endif
 CDEFS := $(CDEFS) 
 INCLUDES := -I. -I$(SRCDIR)/include -I$(SRCDIR)/arch -I$(SRCDIR) $(INCLUDES)
 LDFLAGS := $(LDFLAGS) 
-CFG1_OUT_LDFLAGS := $(CFG1_OUT_LDFLAGS) 
+CFG1_OUT_LDFLAGS := $(CFG1_OUT_LDFLAGS)
 LIBS := $(LIBS) $(CXXLIBS)
 CFLAGS = $(COPTS) $(CDEFS) $(INCLUDES)
 
 #
-#  アプリケーションプログラムに関する定義
+#  アプリケーションプログラムに関する定義(check)
 #
-# APPLNAME = sample1
-# APPLDIR = 
-# APPL_CFG = $(APPLNAME).cfg
+#APPLNAME = sample1
+#APPLDIRS = $(SRCDIR)/sample
+#APPL_CFG = sample1.cfg
+#APPL_CDL = sample1.cdl
 
 APPL_DIR = $(APPLDIR) $(SRCDIR)/library
-APPL_ASMOBJS := $(APPL_ASMOBJS)
+APPL_ASMOBJS =
 ifdef USE_CXX
-  APPL_CXXOBJS := $(APPLNAME).o $(APPL_CXXOBJS)
-  APPL_COBJS := $(APPL_COBJS)
+	APPL_CXXOBJS += $(APPLNAME).o
+	APPL_COBJS =
 else
-  APPL_COBJS := $(APPLNAME).o $(APPL_COBJS)
+	APPL_COBJS = $(APPLNAME).o
 endif
 APPL_COBJS := $(APPL_COBJS) log_output.o vasyslog.o t_perror.o strerror.o
-# APPL_CFLAGS =
-# APPL_LIBS =
+APPL_CFLAGS := $(APPL_CFLAGS)
 ifdef APPLDIR
-  INCLUDES := $(INCLUDES) $(foreach dir,$(APPLDIR),-I$(dir))
-  INCLUDE_PATHS :=  $(INCLUDE_PATHS)  $(foreach dir,$(APPLDIR),-I$(dir))
+	INCLUDES := $(INCLUDES) $(foreach dir,$(APPLDIR),-I$(dir))
 endif
 
 #
 #  システムサービスに関する定義
 #
-SYSSVC_DIR := $(SYSSVC_DIR) $(SRCDIR)/syssvc $(SRCDIR)/library
+SYSSVC_DIRS := $(TECSGENDIR) $(SRCDIR)/tecs_kernel \
+				$(SYSSVC_DIRS) $(SRCDIR)/syssvc
 SYSSVC_ASMOBJS := $(SYSSVC_ASMOBJS)
-SYSSVC_COBJS := $(SYSSVC_COBJS) banner.o syslog.o serial.o logtask.o $(CXXRTS)
-				 
+SYSSVC_COBJS := $(SYSSVC_COBJS)  $(TECS_COBJS) \
+				$(INIT_TECS_COBJ) $(CXXRTS)
 SYSSVC_CFLAGS := $(SYSSVC_CFLAGS)
-SYSSVC_LIBS := $(SYSSVC_LIBS)
-INCLUDES := $(INCLUDES)
+INCLUDES := $(INCLUDES) -I$(TECSGENDIR) -I$(SRCDIR)/tecs_kernel
+
+#
+#  ターゲットファイル
+#
+.PHONY: all
+ifndef OMIT_TECS
+all: tecs
+	@$(MAKE) check
+#	@$(MAKE) check $(OBJNAME).bin
+#	@$(MAKE) check $(OBJNAME).srec
+else
+all: check
+#all: check $(OBJNAME).bin
+#all: check $(OBJNAME).srec
+endif
+
+##### 以下は編集しないこと #####
+
+#
+#  コンフィギュレータに関する定義
+#
+CFG_KERNEL := --kernel asp
+CFG_TABS := --api-table $(SRCDIR)/kernel/kernel_api.def \
+			--symval-table $(SRCDIR)/kernel/kernel_sym.def $(CFG_TABS)
+CFG_ASMOBJS := $(CFG_ASMOBJS)
+CFG_COBJS := kernel_cfg.o $(CFG_COBJS)
+CFG_OBJS := $(CFG_ASMOBJS) $(CFG_COBJS)
+CFG2_OUT_SRCS := kernel_cfg.h kernel_cfg.c $(CFG2_OUT_SRCS)
+CFG_CFLAGS := -DTOPPERS_CB_TYPE_ONLY $(CFG_CFLAGS)
 
 #
 #  カーネルに関する定義
@@ -202,59 +251,46 @@ INCLUDES := $(INCLUDES)
 #				  1つのソースファイルから複数のオブジェクトファイルを生
 #				  成するもの．
 #  KERNEL_LCOBJS: 上のソースファイルから生成されるオブジェクトファイル．
-#  KERNEL_AUX_COBJS: ロードモジュールに含めないが，カーネルのソースファ
-#					 イルと同じオプションを適用してコンパイルすべき，ソー
-#					 スがC言語のオブジェクトファイル．
 #
-KERNEL_DIR := $(KERNEL_DIR) $(SRCDIR)/kernel
+KERNEL_DIRS := $(KERNEL_DIRS) $(SRCDIR)/kernel
 KERNEL_ASMOBJS := $(KERNEL_ASMOBJS)
 KERNEL_COBJS := $(KERNEL_COBJS)
 KERNEL_CFLAGS := $(KERNEL_CFLAGS) -I$(SRCDIR)/kernel
-ifdef OMIT_MAKEOFFSET
-  OFFSET_H =
-else
-  OFFSET_H = offset.h
-ifndef OFFSET_TF
-  KERNEL_AUX_COBJS := $(KERNEL_AUX_COBJS) makeoffset.o
-endif
-endif
-
-#
-#  ターゲットファイル（複数を同時に選択してはならない）
-#
-#all: $(OBJFILE)
-all: $(OBJNAME).bin
-#all: $(OBJNAME).srec
-
-##### 以下は編集しないこと #####
-
-#
-#  環境に依存するコンパイルオプションの定義
-#
-ifdef DBGENV
-  CDEFS := $(CDEFS) -D$(DBGENV)
-endif
 
 #
 #  カーネルのファイル構成の定義
 #
 include $(SRCDIR)/kernel/Makefile.kernel
 ifdef KERNEL_FUNCOBJS
-  KERNEL_LCSRCS := $(KERNEL_FCSRCS)
-  KERNEL_LCOBJS := $(foreach file,$(KERNEL_FCSRCS),$($(file:.c=)))
+	KERNEL_LCSRCS := $(KERNEL_FCSRCS)
+	KERNEL_LCOBJS := $(foreach file,$(KERNEL_FCSRCS),$($(file:.c=)))
 else
-  KERNEL_CFLAGS := -DALLFUNC $(KERNEL_CFLAGS)
-  KERNEL_COBJS := $(KERNEL_COBJS) \
+	KERNEL_CFLAGS := -DALLFUNC $(KERNEL_CFLAGS)
+	KERNEL_COBJS := $(KERNEL_COBJS) \
 					$(foreach file,$(KERNEL_FCSRCS),$(file:.c=.o))
+endif
+ifdef TARGET_OFFSET_TRB
+	OFFSET_H = offset.h
+endif
+ifndef TARGET_KERNEL_TRB
+	TARGET_KERNEL_TRB := $(TARGETDIR)/target_kernel.trb
+endif
+ifndef TARGET_CHECK_TRB
+	TARGET_CHECK_TRB := $(TARGETDIR)/target_check.trb
+endif
+ifndef TARGET_KERNEL_CFG
+	TARGET_KERNEL_CFG := $(TARGETDIR)/target_kernel.cfg
 endif
 
 #
 #  ソースファイルのあるディレクトリに関する定義
-#
-vpath %.c $(KERNEL_DIR) $(SYSSVC_DIR) $(APPL_DIR)
-vpath %.cpp $(KERNEL_DIR) $(SYSSVC_DIR) $(APPL_DIR)
-vpath %.S $(KERNEL_DIR) $(SYSSVC_DIR) $(APPL_DIR)
+#  vpathでソースファイルが入ってるディレクトリを指定
+#  %.cppを追加(truestudioより)
+vpath %.c $(KERNEL_DIRS) $(SYSSVC_DIRS) $(APPL_DIR)
+vpath %.cpp $(KERNEL_DIRS) $(SYSSVC_DIRS) $(APPL_DIR)
+vpath %.S $(KERNEL_DIRS) $(SYSSVC_DIRS) $(APPL_DIR)
 vpath %.cfg $(APPL_DIR)
+vpath %.cdl $(APPL_DIR)
 
 #
 #  コンパイルのための変数の定義
@@ -264,16 +300,34 @@ SYSSVC_OBJS = $(SYSSVC_ASMOBJS) $(SYSSVC_COBJS)
 APPL_OBJS = $(APPL_ASMOBJS) $(APPL_COBJS) $(APPL_CXXOBJS)
 ALL_OBJS = $(START_OBJS) $(APPL_OBJS) $(SYSSVC_OBJS) $(CFG_OBJS) \
 											$(END_OBJS) $(HIDDEN_OBJS)
+#ALL_LIBS = -lkernel $(LIBS)
 ifdef KERNEL_LIB
-  ALL_LIBS = $(APPL_LIBS) $(SYSSVC_LIBS) -lkernel $(LIBS)
-  LIBS_DEP = $(filter %.a,$(ALL_LIBS)) $(KERNEL_LIB)/libkernel.a
-  LDFLAGS := $(LDFLAGS) -L$(KERNEL_LIB)
-  REALCLEAN_FILES := libkernel.a $(REALCLEAN_FILES)
+	ALL_LIBS = $(APPL_LIBS) $(SYSSVC_LIBS) -lkernel $(LIBS)
+	LIBS_DEP = $(filter %.a,$(ALL_LIBS)) $(KERNEL_LIB)/libkernel.a 
+#	OBJ_LDFLAGS := $(OBJ_LDFLAGS) -L$(KERNEL_LIB)
+	LDFLAGS := $(LDFLAGS) -L$(KERNEL_LIB)
+	REALCLEAN_FILES := libkernel.a $(REALCLEAN_FILES)
 else
-  ALL_LIBS = $(APPL_LIBS) $(SYSSVC_LIBS) libkernel.a $(LIBS)
-  LIBS_DEP = $(filter %.a,$(ALL_LIBS))
+#	LIBS_DEP = libkernel.a $(filter %.a,$(LIBS))
+#	OBJ_LDFLAGS := $(OBJ_LDFLAGS) -L.
+	ALL_LIBS = $(APPL_LIBS) $(SYSSVC_LIBS) libkernel.a $(LIBS)
+  	LIBS_DEP = $(filter %.a,$(ALL_LIBS))
 endif
 
+#
+#  tecsgenからCプリプロセッサを呼び出す際のオプションの定義
+#
+TECS_CPP = $(CC) $(CDEFS) $(INCLUDES) $(SYSSVC_CFLAGS) -D TECSGEN -E
+
+#
+#  tecsgenの呼出し
+#
+.PHONY: tecs
+tecs $(TECSGEN_SRCS) $(TECS_HEADERS): $(TECSGEN_TIMESTAMP) ;
+$(TECSGEN_TIMESTAMP): $(APPL_CDL) $(TECS_IMPORTS)
+	$(TECSGEN) $< -R $(INCLUDES) --cpp "$(TECS_CPP)" -g $(TECSGENDIR)
+
+#check
 ifdef TEXT_START_ADDRESS
   LDFLAGS := $(LDFLAGS) -Wl,-Ttext,$(TEXT_START_ADDRESS)
   CFG1_OUT_LDFLAGS := $(CFG1_OUT_LDFLAGS) -Wl,-Ttext,$(TEXT_START_ADDRESS)
@@ -286,41 +340,35 @@ ifdef LDSCRIPT
   LDFLAGS := $(LDFLAGS) -T $(LDSCRIPT)
   CFG1_OUT_LDFLAGS := $(CFG1_OUT_LDFLAGS) -T $(LDSCRIPT)
 endif
+#
+#  カーネルのコンフィギュレーションファイルの生成
+#
+cfg1_out.c cfg1_out.db: cfg1_out.timestamp ;
+cfg1_out.timestamp: $(APPL_CFG) $(TECSGEN_TIMESTAMP)
+	$(CFG) --pass 1 $(CFG_KERNEL) $(INCLUDES) $(CFG_TABS) \
+						-M $(DEPDIR)/cfg1_out_c.d $(TARGET_KERNEL_CFG) $<
+
+$(CFG1_OUT): $(START_OBJS) cfg1_out.o $(END_OBJS) $(HIDDEN_OBJS)
+	$(LINK) $(CFLAGS) $(CFG1_OUT_LDFLAGS) -o $(CFG1_OUT) \
+						$(START_OBJS) cfg1_out.o $(LIBS) $(END_OBJS)
+
+cfg1_out.syms: $(CFG1_OUT)
+	$(NM) -n $(CFG1_OUT) > cfg1_out.syms
+
+cfg1_out.srec: $(CFG1_OUT)
+	$(OBJCOPY) -O srec -S $(CFG1_OUT) cfg1_out.srec
+
+$(CFG2_OUT_SRCS) cfg2_out.db: kernel_cfg.timestamp ;
+kernel_cfg.timestamp: cfg1_out.db cfg1_out.syms cfg1_out.srec
+	$(CFG) --pass 2 $(CFG_KERNEL) $(INCLUDES) -T $(TARGET_KERNEL_TRB)
 
 #
 #  オフセットファイル（offset.h）の生成規則
 #
-ifdef OFFSET_TF
-offset.h: $(APPL_CFG) kernel_cfg.timestamp
-	$(CFG) --pass 3 --kernel asp $(INCLUDES) \
-				--rom-image cfg1_out.srec --symbol-table cfg1_out.syms \
-				-T $(OFFSET_TF) $(CFG_TABS) $<
-else
-offset.h: makeoffset.s $(SRCDIR)/utils/genoffset
-	$(PERL) $(SRCDIR)/utils/genoffset makeoffset.s > offset.h
-endif
-
-#
-#  カーネルのコンフィギュレーションファイルの生成
-#
-cfg1_out.c: $(APPL_CFG)
-	$(CFG) --pass 1 --kernel asp $(INCLUDES) $(CFG_TABS) $<
-
-$(CFG2_OUT_SRCS): kernel_cfg.timestamp
-kernel_cfg.timestamp: $(APPL_CFG) \
-						$(START_OBJS) cfg1_out.o $(END_OBJS) $(HIDDEN_OBJS)
-	$(LINK) $(CFLAGS) $(CFG1_OUT_LDFLAGS) -o $(CFG1_OUT) \
-						$(START_OBJS) cfg1_out.o $(END_OBJS)
-	$(NM) -n $(CFG1_OUT) > cfg1_out.syms
-	$(OBJCOPY) -O srec -S $(CFG1_OUT) cfg1_out.srec
-	$(CFG) --pass 2 --kernel asp $(INCLUDES) \
-				-T $(TARGETDIR)/target.tf $(CFG_TABS) $<
-ifneq ($(USE_TRUESTUDIO),true)
-	touch -r kernel_cfg.c kernel_cfg.timestamp
-else
-	cmd /c copy /B kernel_cfg.c +,,
-	cmd /c echo  -n > kernel_cfg.timestamp
-endif
+$(OFFSET_H): offset.timestamp ;
+offset.timestamp: cfg1_out.db cfg1_out.syms cfg1_out.srec
+	$(CFG) --pass 2 -O $(CFG_KERNEL) $(INCLUDES) -T $(TARGET_OFFSET_TRB) \
+				--rom-symbol cfg1_out.syms --rom-image cfg1_out.srec
 
 #
 #  カーネルライブラリファイルの生成
@@ -333,32 +381,43 @@ libkernel.a: $(OFFSET_H) $(KERNEL_LIB_OBJS)
 #
 #  特別な依存関係の定義
 #
-banner.o: kernel_cfg.timestamp $(filter-out banner.o,$(ALL_OBJS)) $(LIBS_DEP)
+tBannerMain.o: $(filter-out tBannerMain.o,$(ALL_OBJS)) $(LIBS_DEP)
 
 #
 #  全体のリンク
 #
-$(OBJFILE): $(APPL_CFG) kernel_cfg.timestamp $(ALL_OBJS) $(LIBS_DEP)
-	$(LINK) $(CFLAGS) $(LDFLAGS) -o $(OBJFILE) $(START_OBJS) \
-			$(APPL_OBJS) $(SYSSVC_OBJS) $(CFG_OBJS) $(ALL_LIBS) $(END_OBJS)
+$(OBJFILE): $(ALL_OBJS) $(LIBS_DEP)
+	$(LINK) $(CFLAGS) $(LDFLAGS) $(OBJ_LDFLAGS) -o $(OBJFILE) \
+			$(START_OBJS) $(APPL_OBJS) $(SYSSVC_OBJS) $(CFG_OBJS) \
+			$(ALL_LIBS) $(END_OBJS)
+
+#
+#  シンボルファイルの生成
+#
+$(OBJNAME).syms: $(OBJFILE)
 	$(NM) -n $(OBJFILE) > $(OBJNAME).syms
-	$(OBJCOPY) -O srec -S $(OBJFILE) $(OBJNAME).srec
-	$(CFG) --pass 3 --kernel asp $(INCLUDES) \
-				--rom-image $(OBJNAME).srec --symbol-table $(OBJNAME).syms \
-				-T $(TARGETDIR)/target_check.tf $(CFG_TABS) $<
 
 #
 #  バイナリファイルの生成
 #
 $(OBJNAME).bin: $(OBJFILE)
 	$(OBJCOPY) -O binary -S $(OBJFILE) $(OBJNAME).bin
-#	cp -X $(OBJNAME).bin /Volumes/MBED # for MacOSX
-	
+
 #
 #  Sレコードファイルの生成
 #
 $(OBJNAME).srec: $(OBJFILE)
 	$(OBJCOPY) -O srec -S $(OBJFILE) $(OBJNAME).srec
+
+#
+#  エラーチェック処理
+#
+.PHONY: check
+check: check.timestamp ;
+check.timestamp: cfg2_out.db $(OBJNAME).syms $(OBJNAME).srec
+	$(CFG) --pass 3 $(CFG_KERNEL) -O $(INCLUDES) -T $(TARGET_CHECK_TRB) \
+				--rom-symbol $(OBJNAME).syms --rom-image $(OBJNAME).srec
+	@echo "configuration check passed"
 
 #
 #  コンパイル結果の消去
@@ -367,32 +426,37 @@ $(OBJNAME).srec: $(OBJFILE)
 clean:
 ifneq ($(USE_TRUESTUDIO),true)
 	rm -f $(LIB).a $(ALL_OBJ) $(DEPS)
-	rm -f \#* *~ *.o *.d $(CLEAN_FILES)
+	rm -f \#* *~ *.o $(DEPDIR)/*.d $(CLEAN_FILES) check.timestamp
 	rm -f $(OBJFILE) $(OBJNAME).syms $(OBJNAME).srec $(OBJNAME).bin
-	rm -f kernel_cfg.timestamp $(CFG2_OUT_SRCS)
-	rm -f cfg1_out.c $(CFG1_OUT) cfg1_out.syms cfg1_out.srec
+	rm -f kernel_cfg.timestamp $(CFG2_OUT_SRCS) cfg2_out.db
+	rm -f offset.timestamp $(OFFSET_H)
+	rm -f cfg1_out.syms cfg1_out.srec $(CFG1_OUT)
+	rm -f cfg1_out.timestamp cfg1_out.c cfg1_out.db
+	rm -rf $(TECSGENDIR)
 ifndef KERNEL_LIB
 	rm -f libkernel.a
 endif
 	rm -f makeoffset.s offset.h
 else
 	-rm -f $(LIB).a $(ALL_OBJ) $(DEPS)
-	-rm -f *.o *.d *.a $(CLEAN_FILES)
+	-rm -f \#* *~ *.o $(DEPDIR)/*.d $(CLEAN_FILES) check.timestamp
 	-rm -f $(OBJFILE) $(OBJNAME).syms $(OBJNAME).srec $(OBJNAME).bin
-	-rm -f kernel_cfg.timestamp $(CFG2_OUT_SRCS)
-	-rm -f cfg1_out.c $(CFG1_OUT) cfg1_out.syms cfg1_out.srec
+	-rm -f kernel_cfg.timestamp $(CFG2_OUT_SRCS) cfg2_out.db
+	-rm -f offset.timestamp $(OFFSET_H)
+	-rm -f cfg1_out.syms cfg1_out.srec $(CFG1_OUT)
+	-rm -f cfg1_out.timestamp cfg1_out.c cfg1_out.db
+	-rm -rf $(TECSGENDIR)
 ifndef KERNEL_LIB
 	-rm -f libkernel.a
 endif
 	-rm -f makeoffset.s offset.h
+	-rm -f libkernel.a
 endif
-
-
 .PHONY: cleankernel
 cleankernel:
 ifneq ($(USE_TRUESTUDIO),true)
-	rm -rf $(KERNEL_LIB_OBJS)
-	rm -f makeoffset.s offset.h
+	rm -rf $(OFFSET_H) $(KERNEL_LIB_OBJS)
+	rm -f $(KERNEL_LIB_OBJS:%.o=$(DEPDIR)/%.d)
 else
 	-rm -rf $(KERNEL_LIB_OBJS)
 	-rm -f makeoffset.s offset.h
@@ -415,105 +479,70 @@ else
 realclean: cleandep clean
 	-rm -f $(REALCLEAN_FILES)
 endif
-
 #
-#  コンフィギュレータが生成したファイルのコンパイルルールと依存関係作成
-#  ルールの定義
+#  コンフィギュレータが生成したファイルのコンパイルルールの定義
 #
-#  コンフィギュレータが生成したファイルは，アプリケーションプログラム用，
-#  システムサービス用，カーネル用のすべてのオプションを付けてコンパイル
-#  する．
+#  コンフィギュレータが生成したファイルは，共通のコンパイルオプション
+#  のみを付けてコンパイルする．
 #
 ALL_CFG_COBJS = $(CFG_COBJS) cfg1_out.o
 ALL_CFG_ASMOBJS = $(CFG_ASMOBJS)
-CFG_CFLAGS = $(APPL_CFLAGS) $(SYSSVC_CFLAGS) $(KERNEL_CFLAGS)
 
 $(ALL_CFG_COBJS): %.o: %.c
-	$(CC) -c $(CFLAGS) $(CFG_CFLAGS) $<
+	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(CFG_CFLAGS) $<
 
 ifneq ($(USE_TRUESTUDIO),true)
 $(ALL_CFG_COBJS:.o=.s): %.s: %.c
 	$(CC) -S $(CFLAGS) $(CFG_CFLAGS) $<
 endif
 
-$(ALL_CFG_COBJS:.o=.d): %.d: %.c
-	@$(PERL) $(SRCDIR)/utils/makedep -C $(CC) $(MAKEDEP_OPTS) \
-		-O "$(CFLAGS) $(CFG_CFLAGS)" $< >> Makefile.depend
-
 $(ALL_CFG_ASMOBJS): %.o: %.S
-	$(CC) -c $(CFLAGS) $(CFG_CFLAGS) $<
-
-$(ALL_CFG_ASMOBJS:.o=.d): %.d: %.S
-	@$(PERL) $(SRCDIR)/utils/makedep -C $(CC) $(MAKEDEP_OPTS) \
-		-O "$(CFLAGS) $(CFG_CFLAGS)" $< >> Makefile.depend
+	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(CFG_CFLAGS) $<
 
 #
-#  特殊な依存関係作成ルールの定義
+#  依存関係ファイルのインクルード
 #
-cfg1_out.depend: $(APPL_CFG)
-	@$(CFG) -M cfg1_out.c $(INCLUDES) $< >> Makefile.depend
-
-makeoffset.d: makeoffset.c
-	@$(PERL) $(SRCDIR)/utils/makedep -C $(CC) $(MAKEDEP_OPTS) \
-		-T "makeoffset.s" -O "$(CFLAGS) $(KERNEL_CFLAGS)" $< >> Makefile.depend
-
-#
-#  依存関係ファイルの生成
-#
-.PHONY: gendepend
-gendepend:
-	@echo "Generating Makefile.depend."
-
-.PHONY: deparduino
-deparduino:
-	if [ -f arduino_app.h ]; then \
-		touch arduino_app.h; \
-	fi
-
-.PHONY: depend
-ifdef KERNEL_LIB
-depend: cleandep kernel_cfg.timestamp gendepend deparduino\
-		cfg1_out.depend cfg1_out.d \
-		$(ALL_OBJS:.o=.d)
-else
-depend: cleandep $(OFFSET_H) kernel_cfg.timestamp gendepend deparduino\
-		cfg1_out.depend cfg1_out.d \
-		$(KERNEL_AUX_COBJS:.o=.d) $(KERNEL_ASMOBJS:.o=.d) \
-		$(KERNEL_COBJS:.o=.d) $(KERNEL_LCSRCS:.c=.d) $(ALL_OBJS:.o=.d)
-endif
-
-#
-#  依存関係ファイルをインクルード
-#
--include Makefile.depend
+-include $(DEPDIR)/*.d
 
 #
 #  開発ツールのコマンド名の定義
 #
 ifeq ($(TOOL),gcc)
-  #
-  #  GNU開発環境用
-  #
-  ifdef GCC_TARGET
-    GCC_TARGET_PREFIX = $(GCC_TARGET)-
-  else
-    GCC_TARGET_PREFIX =
-  endif
-  CC = $(GCC_TARGET_PREFIX)gcc
-  CXX = $(GCC_TARGET_PREFIX)g++
-  AS = $(GCC_TARGET_PREFIX)as
-  LD = $(GCC_TARGET_PREFIX)ld
-  AR = $(GCC_TARGET_PREFIX)ar
-  NM = $(GCC_TARGET_PREFIX)nm
-  RANLIB = $(GCC_TARGET_PREFIX)ranlib
-  OBJCOPY = $(GCC_TARGET_PREFIX)objcopy
-  OBJDUMP = $(GCC_TARGET_PREFIX)objdump
+	#
+	#  GNU開発環境用
+	#
+	ifdef GCC_TARGET
+		GCC_TARGET_PREFIX = $(GCC_TARGET)-
+	else
+		GCC_TARGET_PREFIX =
+	endif
+	CC := $(GCC_TARGET_PREFIX)gcc
+	CXX := $(GCC_TARGET_PREFIX)g++
+	AS := $(GCC_TARGET_PREFIX)as
+	LD := $(GCC_TARGET_PREFIX)ld
+	AR := $(GCC_TARGET_PREFIX)ar
+	NM := $(GCC_TARGET_PREFIX)nm
+	RANLIB := $(GCC_TARGET_PREFIX)ranlib
+	OBJCOPY := $(GCC_TARGET_PREFIX)objcopy
+	OBJDUMP := $(GCC_TARGET_PREFIX)objdump
+endif
+
+ifdef DEVTOOLDIR
+	CC := $(DEVTOOLDIR)/$(CC)
+	CXX := $(DEVTOOLDIR)/$(CXX)
+	AS := $(DEVTOOLDIR)/$(AS)
+	LD := $(DEVTOOLDIR)/$(LD)
+	AR := $(DEVTOOLDIR)/$(AR)
+	NM := $(DEVTOOLDIR)/$(NM)
+	RANLIB := $(DEVTOOLDIR)/$(RANLIB)
+	OBJCOPY := $(DEVTOOLDIR)/$(OBJCOPY)
+	OBJDUMP := $(DEVTOOLDIR)/$(OBJDUMP)
 endif
 
 ifdef USE_CXX
-  LINK = $(CXX)
+	LINK = $(CXX)
 else
-  LINK = $(CC)
+	LINK = $(CC)
 endif
 
 #
@@ -521,25 +550,26 @@ endif
 #
 KERNEL_ALL_COBJS = $(KERNEL_COBJS) $(KERNEL_AUX_COBJS)
 
-$(KERNEL_ALL_COBJS): %.o: %.c
-	$(CC) -c $(CFLAGS) $(KERNEL_CFLAGS) $<
+$(KERNEL_COBJS): %.o: %.c
+	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(KERNEL_CFLAGS) $<
 
 ifneq ($(USE_TRUESTUDIO),true)
-$(KERNEL_ALL_COBJS:.o=.s): %.s: %.c
+$(KERNEL_COBJS:.o=.s): %.s: %.c
 	$(CC) -S $(CFLAGS) $(KERNEL_CFLAGS) $<
 endif
 
 $(KERNEL_LCOBJS): %.o:
-	$(CC) -DTOPPERS_$(*F) -o $@ -c $(CFLAGS) $(KERNEL_CFLAGS) $<
+	$(CC) -DTOPPERS_$(*F) -o $@ -c -MD -MP -MF $(DEPDIR)/$*.d \
+									$(CFLAGS) $(KERNEL_CFLAGS) $<
 
 $(KERNEL_LCOBJS:.o=.s): %.s:
 	$(CC) -DTOPPERS_$(*F) -o $@ -S $(CFLAGS) $(KERNEL_CFLAGS) $<
 
 $(KERNEL_ASMOBJS): %.o: %.S
-	$(CC) -c $(CFLAGS) $(KERNEL_CFLAGS) $<
+	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(KERNEL_CFLAGS) $<
 
 $(SYSSVC_COBJS): %.o: %.c
-	$(CC) -c $(CFLAGS) $(SYSSVC_CFLAGS) $<
+	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(SYSSVC_CFLAGS) $<
 
 ifneq ($(USE_TRUESTUDIO),true)
 $(SYSSVC_COBJS:.o=.s): %.s: %.c
@@ -547,18 +577,25 @@ $(SYSSVC_COBJS:.o=.s): %.s: %.c
 endif
 
 $(SYSSVC_ASMOBJS): %.o: %.S
-	$(CC) -c $(CFLAGS) $(SYSSVC_CFLAGS) $<
+	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(SYSSVC_CFLAGS) $<
 
 $(APPL_COBJS): %.o: %.c
-	$(CC) -c $(CFLAGS) $(APPL_CFLAGS) $<
+	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(APPL_CFLAGS) $<
 
 ifneq ($(USE_TRUESTUDIO),true)
 $(APPL_COBJS:.o=.s): %.s: %.c
 	$(CC) -S $(CFLAGS) $(APPL_CFLAGS) $<
 endif
 
+#$(APPL_CXXOBJS): %.o: %.cpp
+#	$(CXX) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(APPL_CFLAGS) $<
+#$(APPL_CXXOBJS:.o=.s): %.s: %.cpp
+#	$(CXX) -S $(CFLAGS) $(APPL_CFLAGS) $<
+#$(APPL_ASMOBJS): %.o: %.S
+#	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(APPL_CFLAGS) $<
+
 $(APPL_CXXOBJS): %.o: %.cpp
-	$(CXX) -c $(CFLAGS) $(APPL_CXXFLAGS) $<
+	$(CXX) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(APPL_CXXFLAGS) $<
 
 ifneq ($(USE_TRUESTUDIO),true)
 $(APPL_CXXOBJS:.o=.s): %.s: %.cpp
@@ -566,49 +603,13 @@ $(APPL_CXXOBJS:.o=.s): %.s: %.cpp
 endif
 
 $(APPL_ASMOBJS): %.o: %.S
-	$(CC) -c $(CFLAGS) $(APPL_CXXFLAGS) $<
-
-#
-#  依存関係作成ルールの定義
-#
-$(KERNEL_COBJS:.o=.d): %.d: %.c
-	@$(PERL) $(SRCDIR)/utils/makedep -C $(CC) $(MAKEDEP_OPTS) \
-		-O "$(CFLAGS) $(KERNEL_CFLAGS)" $< >> Makefile.depend
-
-$(KERNEL_LCSRCS:.c=.d): %.d: %.c
-	@$(PERL) $(SRCDIR)/utils/makedep -C $(CC) $(MAKEDEP_OPTS) -T "$($*)" \
-		-O "-DALLFUNC $(CFLAGS) $(KERNEL_CFLAGS)" $< >> Makefile.depend
-
-$(KERNEL_ASMOBJS:.o=.d): %.d: %.S
-	@$(PERL) $(SRCDIR)/utils/makedep -C $(CC) $(MAKEDEP_OPTS) \
-		-O "$(CFLAGS) $(KERNEL_CFLAGS)" $< >> Makefile.depend
-
-$(SYSSVC_COBJS:.o=.d): %.d: %.c
-	@$(PERL) $(SRCDIR)/utils/makedep -C $(CC) $(MAKEDEP_OPTS) \
-		-O "$(CFLAGS) $(SYSSVC_CFLAGS)" $< >> Makefile.depend
-
-$(SYSSVC_ASMOBJS:.o=.d): %.d: %.S
-	@$(PERL) $(SRCDIR)/utils/makedep -C $(CC) $(MAKEDEP_OPTS) \
-		-O "$(CFLAGS) $(SYSSVC_CFLAGS)" $< >> Makefile.depend
-
-$(APPL_COBJS:.o=.d): %.d: %.c
-	@$(PERL) $(SRCDIR)/utils/makedep -C $(CC) $(MAKEDEP_OPTS) \
-		-O "$(CFLAGS) $(APPL_CFLAGS)" $< >> Makefile.depend
-
-$(APPL_CXXOBJS:.o=.d): %.d: %.cpp
-	@$(PERL) $(SRCDIR)/utils/makedep -C $(CXX) $(MAKEDEP_OPTS) \
-		-O "$(CFLAGS) $(APPL_CFLAGS)" $< >> Makefile.depend
-
-$(APPL_ASMOBJS:.o=.d): %.d: %.S
-	@$(PERL) $(SRCDIR)/utils/makedep -C $(CC) $(MAKEDEP_OPTS) \
-		-O "$(CFLAGS) $(APPL_CFLAGS)" $< >> Makefile.depend
-
+	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(APPL_CXXFLAGS) $<
 #
 #  デフォルトコンパイルルールを上書き
 #
 %.o: %.c
 	@echo "*** Default compile rules should not be used."
-	$(CC) -c $(CFLAGS) $<
+	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $<
 
 %.s: %.c
 	@echo "*** Default compile rules should not be used."
@@ -616,7 +617,7 @@ $(APPL_ASMOBJS:.o=.d): %.d: %.S
 
 %.o: %.cpp
 	@echo "*** Default compile rules should not be used."
-	$(CXX) -c $(CFLAGS) $<
+	$(CXX) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $<
 
 %.s: %.cpp
 	@echo "*** Default compile rules should not be used."
@@ -624,4 +625,41 @@ $(APPL_ASMOBJS:.o=.d): %.d: %.S
 
 %.o: %.S
 	@echo "*** Default compile rules should not be used."
-	$(CC) -c $(CFLAGS) $<
+	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $<
+
+
+$(warning -----------------変数一覧---------------------------)
+$(warning LINK2 = $(LINK))
+$(warning START_OBJS = $(START_OBJS))
+$(warning END_OBJS = $(END_OBJS))
+$(warning HIDDEN_OBJS = $(HIDDEN_OBJS))
+$(warning TEXT_START_ADDRESS = $(TEXT_START_ADDRESS))
+$(warning DATA_START_ADDRESS = $(DATA_START_ADDRESS))
+
+$(warning INCLUDES = $(INCLUDES))
+$(warning CFLAGS = $(CFLAGS))
+$(warning COPTS = $(COPTS)) 
+$(warning CDEFS = $(CDEFS))
+$(warning LDFLAGS = $(LDFLAGS))
+$(warning OBJ_LDFLAGS = $(OBJ_LDFLAGS))
+$(warning LDSCRIPT = $(LDSCRIPT))
+$(warning CFG1_OUT_LDFLAGS = $(CFG1_OUT_LDFLAGS))
+$(warning CFG1_OUT = $(CFG1_OUT))
+$(warning LIBS = $(LIBS))
+$(warning OBJFILE = $(OBJFILE))
+$(warning APPL_CFLAGS = $(APPL_CFLAGS))
+$(warning APPL_CXXFLAGS = $(APPL_CXXFLAGS))
+$(warning APPL_COBJS = $(APPL_COBJS))
+$(warning KERNEL_CFLAGS = $(KERNEL_CFLAGS))
+$(warning CFG_CFLAGS = $(CFG_CFLAGS))
+$(warning SYSSVC_CFLAGS = $(SYSSVC_CFLAGS))
+$(warning SYSSVC_COBJS = $(SYSSVC_COBJS))
+$(warning KERNEL_FCSRCS = $(KERNEL_FCSRCS))
+$(warning KERNEL_ASMOBJS = $(KERNEL_ASMCOBJS))
+$(warning KERNEL_COBJS = $(KERNEL_COBJS))
+$(warning KERNEL_LCOBJS = $(KERNEL_LCOBJS))
+$(warning KERNEL_LIB_OBJS = $(KERNEL_LIB_OBJS))
+$(warning KERNEL_LIB = $(KERNEL_LIB))
+$(warning ALL_LIBS = $(ALL_LIBS))
+$(warning CXXRTS = $(CXXRTS))
+$(warning ------------------------------------------)

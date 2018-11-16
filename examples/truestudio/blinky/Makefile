@@ -23,7 +23,7 @@ MBED_LIB_DIR = ../../../mbed-lib
 #
 #  ASPソースファイルのディレクトリの定義
 #
-SRCDIR = ../../../asp-1.9.2-utf8
+SRCDIR = ../../../asp3
 
 #
 #  MBEDライブラリのビルド
