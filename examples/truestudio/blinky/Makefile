@@ -10,6 +10,7 @@ APPLDIR = ../../blinky
 APPLNAME = blinky
 USE_CXX = true
 APPL_CFG = $(APPLNAME).cfg
+APPL_CDL = $(APPLNAME).cdl
 USE_TRUESTUDIO = true
 
 DEBUG = true
