@@ -51,22 +51,22 @@ all:
 TARGET = gr_peach_gcc
 
 #
-#  プログラミング言語の定義(check)
+#  プログラミング言語の定義
 #
 SRCLANG = c++
 ifeq ($(SRCLANG),c)
 	LIBS = -lc
 endif
 ifeq ($(SRCLANG),c++)
-	USE_CXX = true
-#	CXXLIBS = -lstdc++ -lm -lc
-#	CXXRTS = cxxrt.o newlibrt.o
+   USE_CXX = true
+#  CXXLIBS = -lstdc++ -lm -lc
+#  CXXRTS = cxxrt.o newlibrt.o
 endif
 
 #
 #  ソースファイルのディレクトリの定義
 #
-# SRCDIR = ../../asp3
+# SRCDIR = ..
 
 #
 #  オブジェクトファイル名の拡張子の設定
@@ -77,6 +77,10 @@ else
 OBJEXT = elf
 endif
 
+#
+#  DBGENVはasp3で廃止されている
+#  
+# DBGENV :=
 #
 #  カーネルライブラリ（libkernel.a）のディレクトリ名
 #  （カーネルライブラリもmake対象にする時は，空に定義する）
@@ -159,52 +163,53 @@ ifndef OMIT_TECS
 endif
 
 #
-#  共通コンパイルオプションの定義(check)
-#
+#  共通コンパイルオプションの定義
+#  -I$(SRCDIR)archを追加(imanishi)
 COPTS := $(COPTS) -g -O0 -ggdb
 ifndef OMIT_WARNING_ALL
 	COPTS := $(COPTS) -Wall
 endif
 ifndef OMIT_OPTIMIZATION
-	COPTS := $(COPTS) -O2 
+	COPTS := $(COPTS) -O2
 endif
 ifdef OMIT_TECS
 	CDEFS := -DTOPPERS_OMIT_TECS $(CDEFS)
 endif
 CDEFS := $(CDEFS) 
-INCLUDES := -I. -I$(SRCDIR)/include -I$(SRCDIR)/arch -I$(SRCDIR) $(INCLUDES)
+INCLUDES := -I. -I$(SRCDIR)/include -I$(SRCDIR)/arch $(INCLUDES) -I$(SRCDIR)
 LDFLAGS := $(LDFLAGS) 
 CFG1_OUT_LDFLAGS := $(CFG1_OUT_LDFLAGS)
 LIBS := $(LIBS) $(CXXLIBS)
 CFLAGS = $(COPTS) $(CDEFS) $(INCLUDES)
 
 #
-#  アプリケーションプログラムに関する定義(check)
-#
-#APPLNAME = sample1
-#APPLDIRS = $(SRCDIR)/sample
-#APPL_CFG = sample1.cfg
-#APPL_CDL = sample1.cdl
+#  アプリケーションプログラムに関する定義
+#  include_pathsを追加
+# APPLNAME = sample1
+# APPLDIR = $(SRCDIR)/sample
+# APPL_CFG = sample1.cfg
+# APPL_CDL = sample1.cdl
 
-APPL_DIR = $(APPLDIR) $(SRCDIR)/library
-APPL_ASMOBJS =
+APPL_DIRS = $(APPLDIR) $(SRCDIR)/library
+APPL_ASMOBJS := $(APPL_ASMOBJS)
 ifdef USE_CXX
-	APPL_CXXOBJS += $(APPLNAME).o
-	APPL_COBJS =
+	APPL_CXXOBJS := $(APPLNAME).o $(APPL_CXXOBJS)
+	APPL_COBJS := $(APPL_COBJS)
 else
-	APPL_COBJS = $(APPLNAME).o
+	APPL_COBJS := $(APPLNAME).o $(APPL_COBJS)
 endif
 APPL_COBJS := $(APPL_COBJS) log_output.o vasyslog.o t_perror.o strerror.o
-APPL_CFLAGS := $(APPL_CFLAGS)
+# APPL_CFLAGS = 
 ifdef APPLDIR
 	INCLUDES := $(INCLUDES) $(foreach dir,$(APPLDIR),-I$(dir))
+	INCLUDE_PATHS := $(INCLUDE_PATHS)  $(foreach dir,$(APPLDIR),-I$(dir)) 
 endif
 
 #
 #  システムサービスに関する定義
-#
+#  $(SRCDIR)libraryを追加
 SYSSVC_DIRS := $(TECSGENDIR) $(SRCDIR)/tecs_kernel \
-				$(SYSSVC_DIRS) $(SRCDIR)/syssvc
+				$(SYSSVC_DIRS) $(SRCDIR)/syssvc $(SRCDIR)/library
 SYSSVC_ASMOBJS := $(SYSSVC_ASMOBJS)
 SYSSVC_COBJS := $(SYSSVC_COBJS)  $(TECS_COBJS) \
 				$(INIT_TECS_COBJ) $(CXXRTS)
@@ -284,13 +289,12 @@ endif
 
 #
 #  ソースファイルのあるディレクトリに関する定義
-#  vpathでソースファイルが入ってるディレクトリを指定
-#  %.cppを追加(truestudioより)
-vpath %.c $(KERNEL_DIRS) $(SYSSVC_DIRS) $(APPL_DIR)
-vpath %.cpp $(KERNEL_DIRS) $(SYSSVC_DIRS) $(APPL_DIR)
-vpath %.S $(KERNEL_DIRS) $(SYSSVC_DIRS) $(APPL_DIR)
-vpath %.cfg $(APPL_DIR)
-vpath %.cdl $(APPL_DIR)
+#
+vpath %.c $(KERNEL_DIRS) $(SYSSVC_DIRS) $(APPL_DIRS)
+vpath %.cpp $(KERNEL_DIRS) $(SYSSVC_DIRS) $(APPL_DIRS)
+vpath %.S $(KERNEL_DIRS) $(SYSSVC_DIRS) $(APPL_DIRS)
+vpath %.cfg $(APPL_DIRS)
+vpath %.cdl $(APPL_DIRS)
 
 #
 #  コンパイルのための変数の定義
@@ -300,7 +304,7 @@ SYSSVC_OBJS = $(SYSSVC_ASMOBJS) $(SYSSVC_COBJS)
 APPL_OBJS = $(APPL_ASMOBJS) $(APPL_COBJS) $(APPL_CXXOBJS)
 ALL_OBJS = $(START_OBJS) $(APPL_OBJS) $(SYSSVC_OBJS) $(CFG_OBJS) \
 											$(END_OBJS) $(HIDDEN_OBJS)
-#ALL_LIBS = -lkernel $(LIBS)
+# ALL_LIBS = -lkernel $(LIBS)
 ifdef KERNEL_LIB
 	ALL_LIBS = $(APPL_LIBS) $(SYSSVC_LIBS) -lkernel $(LIBS)
 	LIBS_DEP = $(filter %.a,$(ALL_LIBS)) $(KERNEL_LIB)/libkernel.a 
@@ -308,11 +312,11 @@ ifdef KERNEL_LIB
 	LDFLAGS := $(LDFLAGS) -L$(KERNEL_LIB)
 	REALCLEAN_FILES := libkernel.a $(REALCLEAN_FILES)
 else
-#	LIBS_DEP = libkernel.a $(filter %.a,$(LIBS))
-#	OBJ_LDFLAGS := $(OBJ_LDFLAGS) -L.
 	ALL_LIBS = $(APPL_LIBS) $(SYSSVC_LIBS) libkernel.a $(LIBS)
-  	LIBS_DEP = $(filter %.a,$(ALL_LIBS))
+	LIBS_DEP = $(filter %.a,$(ALL_LIBS))
+#	OBJ_LDFLAGS := $(OBJ_LDFLAGS) -L.
 endif
+
 
 #
 #  tecsgenからCプリプロセッサを呼び出す際のオプションの定義
@@ -450,17 +454,19 @@ ifndef KERNEL_LIB
 	-rm -f libkernel.a
 endif
 	-rm -f makeoffset.s offset.h
-	-rm -f libkernel.a
 endif
+
+
 .PHONY: cleankernel
 cleankernel:
 ifneq ($(USE_TRUESTUDIO),true)
-	rm -rf $(OFFSET_H) $(KERNEL_LIB_OBJS)
+	rm -f $(OFFSET_H) $(KERNEL_LIB_OBJS)
 	rm -f $(KERNEL_LIB_OBJS:%.o=$(DEPDIR)/%.d)
 else
-	-rm -rf $(KERNEL_LIB_OBJS)
-	-rm -f makeoffset.s offset.h
+	-rm -f $(OFFSET_H) $(KERNEL_LIB_OBJS)
+	-rm -f $(KERNEL_LIB_OBJS:%.o=$(DEPDIR)/%.d)
 endif
+
 
 .PHONY: cleandep
 cleandep:
@@ -479,6 +485,7 @@ else
 realclean: cleandep clean
 	-rm -f $(REALCLEAN_FILES)
 endif
+
 #
 #  コンフィギュレータが生成したファイルのコンパイルルールの定義
 #
@@ -495,7 +502,6 @@ ifneq ($(USE_TRUESTUDIO),true)
 $(ALL_CFG_COBJS:.o=.s): %.s: %.c
 	$(CC) -S $(CFLAGS) $(CFG_CFLAGS) $<
 endif
-
 $(ALL_CFG_ASMOBJS): %.o: %.S
 	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(CFG_CFLAGS) $<
 
@@ -547,12 +553,13 @@ endif
 
 #
 #  コンパイルルールの定義
-#
-KERNEL_ALL_COBJS = $(KERNEL_COBJS) $(KERNEL_AUX_COBJS)
+#  KERNEL_AUX_COBJS,KERNEL_ALL_COBJSはasp3では定義されていない
+#KERNEL_ALL_COBJS = $(KERNEL_COBJS) $(KERNEL_AUX_COBJS)
 
+#$(KERNEL_ALL_COBJS): %.o: %.c
+#	$(CC) -c $(CFLAGS) $(KERNEL_CFLAGS) $<
 $(KERNEL_COBJS): %.o: %.c
 	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(KERNEL_CFLAGS) $<
-
 ifneq ($(USE_TRUESTUDIO),true)
 $(KERNEL_COBJS:.o=.s): %.s: %.c
 	$(CC) -S $(CFLAGS) $(KERNEL_CFLAGS) $<
@@ -583,16 +590,9 @@ $(APPL_COBJS): %.o: %.c
 	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(APPL_CFLAGS) $<
 
 ifneq ($(USE_TRUESTUDIO),true)
-$(APPL_COBJS:.o=.s): %.s: %.c
+	$(APPL_COBJS:.o=.s): %.s: %.c
 	$(CC) -S $(CFLAGS) $(APPL_CFLAGS) $<
 endif
-
-#$(APPL_CXXOBJS): %.o: %.cpp
-#	$(CXX) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(APPL_CFLAGS) $<
-#$(APPL_CXXOBJS:.o=.s): %.s: %.cpp
-#	$(CXX) -S $(CFLAGS) $(APPL_CFLAGS) $<
-#$(APPL_ASMOBJS): %.o: %.S
-#	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(APPL_CFLAGS) $<
 
 $(APPL_CXXOBJS): %.o: %.cpp
 	$(CXX) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(APPL_CXXFLAGS) $<
@@ -604,6 +604,7 @@ endif
 
 $(APPL_ASMOBJS): %.o: %.S
 	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(APPL_CXXFLAGS) $<
+
 #
 #  デフォルトコンパイルルールを上書き
 #
@@ -629,14 +630,17 @@ $(APPL_ASMOBJS): %.o: %.S
 
 
 $(warning -----------------変数一覧---------------------------)
-$(warning LINK2 = $(LINK))
+$(warning LINK = $(LINK))
+$(warning CXX = $(CXX))
 $(warning START_OBJS = $(START_OBJS))
 $(warning END_OBJS = $(END_OBJS))
 $(warning HIDDEN_OBJS = $(HIDDEN_OBJS))
 $(warning TEXT_START_ADDRESS = $(TEXT_START_ADDRESS))
 $(warning DATA_START_ADDRESS = $(DATA_START_ADDRESS))
-
+$(warning dir = $(dir))
+$(warning APPLDIR = $(APPLDIR))
 $(warning INCLUDES = $(INCLUDES))
+$(warning INCLUDE_PATHS = $(INCLUDE_PATHS))
 $(warning CFLAGS = $(CFLAGS))
 $(warning COPTS = $(COPTS)) 
 $(warning CDEFS = $(CDEFS))
@@ -650,6 +654,7 @@ $(warning OBJFILE = $(OBJFILE))
 $(warning APPL_CFLAGS = $(APPL_CFLAGS))
 $(warning APPL_CXXFLAGS = $(APPL_CXXFLAGS))
 $(warning APPL_COBJS = $(APPL_COBJS))
+$(warning APPL_CXXOBJS = $(APPL_CXXOBJS))
 $(warning KERNEL_CFLAGS = $(KERNEL_CFLAGS))
 $(warning CFG_CFLAGS = $(CFG_CFLAGS))
 $(warning SYSSVC_CFLAGS = $(SYSSVC_CFLAGS))
@@ -658,8 +663,10 @@ $(warning KERNEL_FCSRCS = $(KERNEL_FCSRCS))
 $(warning KERNEL_ASMOBJS = $(KERNEL_ASMCOBJS))
 $(warning KERNEL_COBJS = $(KERNEL_COBJS))
 $(warning KERNEL_LCOBJS = $(KERNEL_LCOBJS))
+$(warning KERNEL_AUX_COBJS = $(KERNEL_AUX_COBJS))
 $(warning KERNEL_LIB_OBJS = $(KERNEL_LIB_OBJS))
 $(warning KERNEL_LIB = $(KERNEL_LIB))
 $(warning ALL_LIBS = $(ALL_LIBS))
 $(warning CXXRTS = $(CXXRTS))
+$(warning TECSDIR = $(TECSDIR))
 $(warning ------------------------------------------)
