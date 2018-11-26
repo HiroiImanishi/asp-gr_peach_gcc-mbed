@@ -1,0 +1,5 @@
+20:34:43 **** Clean-only build of configuration Debug for project row_asp ****
+rm -rf src/tiny_printf.d src/tiny_printf.o row_asp row_asp.elf src/main.d src/main.o src/common/rza_io_regrw.d src/common/rza_io_regrw.o src/startup_rz.o 
+
+20:34:44 Build Finished (took 479ms)
+

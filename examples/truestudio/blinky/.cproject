@@ -19,9 +19,9 @@
 						<toolChain id="com.atollic.truestudio.exe.debug.toolchain.1670710213" name="Atollic ARM Tools" superClass="com.atollic.truestudio.exe.debug.toolchain">
 							<option id="com.atollic.truestudio.toolchain_options.mcu.148591219" name="Microcontroller" superClass="com.atollic.truestudio.toolchain_options.mcu" value="R7S721000" valueType="string"/>
 							<option id="com.atollic.truestudio.toolchain_options.vendor.1295786916" name="Vendor name" superClass="com.atollic.truestudio.toolchain_options.vendor" value="Renesas" valueType="string"/>
-							<option id="com.atollic.truestudio.general.runtimelib.194472654" superClass="com.atollic.truestudio.general.runtimelib" value="com.atollic.truestudio.ld.general.cclib.CCSmallCSmall" valueType="enumerated"/>
+							<option id="com.atollic.truestudio.general.runtimelib.194472654" name="Runtime Library" superClass="com.atollic.truestudio.general.runtimelib" value="com.atollic.truestudio.ld.general.cclib.CCSmallCSmall" valueType="enumerated"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="com.atollic.truestudio.exe.debug.toolchain.platform.90584130" isAbstract="false" name="Debug platform" superClass="com.atollic.truestudio.exe.debug.toolchain.platform"/>
-							<builder arguments="-i" command="make" id="org.eclipse.cdt.build.core.settings.default.builder.1095549479" incrementalBuildTarget="asp.bin EXECUTE_ON=ROM" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make ビルダー" superClass="org.eclipse.cdt.build.core.settings.default.builder"/>
+							<builder arguments="-i" command="make" id="org.eclipse.cdt.build.core.settings.default.builder.1095549479" incrementalBuildTarget="asp.bin EXECUTE_ON=ROM" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="org.eclipse.cdt.build.core.settings.default.builder"/>
 							<tool id="com.atollic.truestudio.exe.debug.toolchain.as.1087282840" name="Assembler" superClass="com.atollic.truestudio.exe.debug.toolchain.as">
 								<option id="com.atollic.truestudio.common_options.target.fpucore.2127098876" name="FPU" superClass="com.atollic.truestudio.common_options.target.fpucore" value="NEON-VFPv3" valueType="enumerated"/>
 								<inputType id="com.atollic.truestudio.as.input.1107766592" name="Input" superClass="com.atollic.truestudio.as.input"/>

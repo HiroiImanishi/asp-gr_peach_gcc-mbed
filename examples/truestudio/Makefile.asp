@@ -176,7 +176,7 @@ ifdef OMIT_TECS
 	CDEFS := -DTOPPERS_OMIT_TECS $(CDEFS)
 endif
 CDEFS := $(CDEFS) 
-INCLUDES := -I. -I$(SRCDIR)/include -I$(SRCDIR)/arch $(INCLUDES) -I$(SRCDIR)
+INCLUDES := -I. -I$(SRCDIR)/include -I$(SRCDIR)/arch -I$(SRCDIR) $(INCLUDES)
 LDFLAGS := $(LDFLAGS) 
 CFG1_OUT_LDFLAGS := $(CFG1_OUT_LDFLAGS)
 LIBS := $(LIBS) $(CXXLIBS)
@@ -302,8 +302,7 @@ vpath %.cdl $(APPL_DIRS)
 KERNEL_LIB_OBJS = $(KERNEL_ASMOBJS) $(KERNEL_COBJS) $(KERNEL_LCOBJS)
 SYSSVC_OBJS = $(SYSSVC_ASMOBJS) $(SYSSVC_COBJS)
 APPL_OBJS = $(APPL_ASMOBJS) $(APPL_COBJS) $(APPL_CXXOBJS)
-ALL_OBJS = $(START_OBJS) $(APPL_OBJS) $(SYSSVC_OBJS) $(CFG_OBJS) \
-											$(END_OBJS) $(HIDDEN_OBJS)
+ALL_OBJS = $(START_OBJS) $(APPL_OBJS) $(SYSSVC_OBJS) $(CFG_OBJS) $(END_OBJS) $(HIDDEN_OBJS)
 # ALL_LIBS = -lkernel $(LIBS)
 ifdef KERNEL_LIB
 	ALL_LIBS = $(APPL_LIBS) $(SYSSVC_LIBS) -lkernel $(LIBS)
@@ -556,8 +555,6 @@ endif
 #  KERNEL_AUX_COBJS,KERNEL_ALL_COBJSはasp3では定義されていない
 #KERNEL_ALL_COBJS = $(KERNEL_COBJS) $(KERNEL_AUX_COBJS)
 
-#$(KERNEL_ALL_COBJS): %.o: %.c
-#	$(CC) -c $(CFLAGS) $(KERNEL_CFLAGS) $<
 $(KERNEL_COBJS): %.o: %.c
 	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(KERNEL_CFLAGS) $<
 ifneq ($(USE_TRUESTUDIO),true)
@@ -590,7 +587,7 @@ $(APPL_COBJS): %.o: %.c
 	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(APPL_CFLAGS) $<
 
 ifneq ($(USE_TRUESTUDIO),true)
-	$(APPL_COBJS:.o=.s): %.s: %.c
+$(APPL_COBJS:.o=.s): %.s: %.c
 	$(CC) -S $(CFLAGS) $(APPL_CFLAGS) $<
 endif
 
@@ -649,14 +646,18 @@ $(warning OBJ_LDFLAGS = $(OBJ_LDFLAGS))
 $(warning LDSCRIPT = $(LDSCRIPT))
 $(warning CFG1_OUT_LDFLAGS = $(CFG1_OUT_LDFLAGS))
 $(warning CFG1_OUT = $(CFG1_OUT))
+$(warning CFG_OBJS = $(CFG_OBJS))
+$(warning CFG_ASMOBJS = $(CFG_ASMOBJS))
 $(warning LIBS = $(LIBS))
 $(warning OBJFILE = $(OBJFILE))
 $(warning APPL_CFLAGS = $(APPL_CFLAGS))
 $(warning APPL_CXXFLAGS = $(APPL_CXXFLAGS))
 $(warning APPL_COBJS = $(APPL_COBJS))
+$(warning APPL_ASMOBJS = $(APPL_ASMOBJS))
 $(warning APPL_CXXOBJS = $(APPL_CXXOBJS))
 $(warning KERNEL_CFLAGS = $(KERNEL_CFLAGS))
 $(warning CFG_CFLAGS = $(CFG_CFLAGS))
+$(warning SYSSVC_OBJS = $(SYSSVC_OBJS))
 $(warning SYSSVC_CFLAGS = $(SYSSVC_CFLAGS))
 $(warning SYSSVC_COBJS = $(SYSSVC_COBJS))
 $(warning KERNEL_FCSRCS = $(KERNEL_FCSRCS))
@@ -666,7 +667,9 @@ $(warning KERNEL_LCOBJS = $(KERNEL_LCOBJS))
 $(warning KERNEL_AUX_COBJS = $(KERNEL_AUX_COBJS))
 $(warning KERNEL_LIB_OBJS = $(KERNEL_LIB_OBJS))
 $(warning KERNEL_LIB = $(KERNEL_LIB))
+$(warning LIBS_DEP = $(LIBS_DEP))
 $(warning ALL_LIBS = $(ALL_LIBS))
+$(warning ALL_OBJS = $(ALL_OBJS))
 $(warning CXXRTS = $(CXXRTS))
 $(warning TECSDIR = $(TECSDIR))
 $(warning ------------------------------------------)

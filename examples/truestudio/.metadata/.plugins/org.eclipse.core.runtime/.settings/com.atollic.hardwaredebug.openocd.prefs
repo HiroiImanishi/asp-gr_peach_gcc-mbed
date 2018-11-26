@@ -1,0 +1,4 @@
+com.atollic.hardwaredebug.openocd.location=/home/imanishi/Documents/gnuarmeclipse_openocd64/openocd/0.10.0-201704182147-dev/bin/openocd
+com.atollic.hardwaredebug.openocd.sleep_bf_connect=2
+com.atollic.hardwaredebug.openocd.working_dir=/home/imanishi/Documents/gnuarmeclipse_openocd64/openocd/0.10.0-201704182147-dev
+eclipse.preferences.version=1

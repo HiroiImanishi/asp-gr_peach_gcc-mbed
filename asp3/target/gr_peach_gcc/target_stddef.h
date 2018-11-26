@@ -62,12 +62,12 @@
 #endif /* TOPPERS_MACRO_ONLY */
 
 #define TOPPERS_STDFLOAT_TYPE1
-#include "../../arch/gcc/tool_stddef.h"
+#include "tool_stddef.h"
 
 /*
  *  チッブで共通な定義
  */
-#include "../../arch/arm_gcc/rza1/chip_stddef.h"
+#include "chip_stddef.h"
 
 /*
  *  アサーションの失敗時の実行中断処理

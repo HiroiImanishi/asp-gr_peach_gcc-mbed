@@ -1,4 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Delete resource &apos;blinky/blinky.cdl&apos;" deleteContents="false" description="Delete resource &apos;blinky/blinky.cdl&apos;" element1="/blinky/blinky.cdl" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1542277577553"/>
+<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;blinky/blinky.cdl&apos;" deleteContents="false" description="Delete resource &apos;blinky/blinky.cdl&apos;" element1="/blinky/blinky.cdl" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1542277577553"/>&#x0A;<refactoring comment="Delete 8 resources" deleteContents="false" description="Delete 8 resources" element1="/blinky_arduino" element2="/httpsample" element3="/multifile_arduino" element4="/multitask_arduino" element5="/sample1" element6="/sslClient" element7="/truestudio" element8="/webcamera" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="8" stamp="1542361806881"/>
 </session>

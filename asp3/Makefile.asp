@@ -71,7 +71,11 @@ endif
 #
 #  オブジェクトファイル名の拡張子の設定
 #
+ifneq ($(USE_TRUESTUDIO),true)
 OBJEXT = 
+else
+OBJEXT = elf
+endif
 
 #
 #  カーネルライブラリ（libkernel.a）のディレクトリ名
@@ -280,8 +284,10 @@ endif
 
 #
 #  ソースファイルのあるディレクトリに関する定義
-#
+#  vpathでソースファイルが入ってるディレクトリを指定
+#  %.cppを追加(truestudioより)
 vpath %.c $(KERNEL_DIRS) $(SYSSVC_DIRS) $(APPL_DIR)
+vpath %.cpp $(KERNEL_DIRS) $(SYSSVC_DIRS) $(APPL_DIR)
 vpath %.S $(KERNEL_DIRS) $(SYSSVC_DIRS) $(APPL_DIR)
 vpath %.cfg $(APPL_DIR)
 vpath %.cdl $(APPL_DIR)
@@ -418,6 +424,7 @@ check.timestamp: cfg2_out.db $(OBJNAME).syms $(OBJNAME).srec
 #
 .PHONY: clean
 clean:
+ifneq ($(USE_TRUESTUDIO),true)
 	rm -f $(LIB).a $(ALL_OBJ) $(DEPS)
 	rm -f \#* *~ *.o $(DEPDIR)/*.d $(CLEAN_FILES) check.timestamp
 	rm -f $(OBJFILE) $(OBJNAME).syms $(OBJNAME).srec $(OBJNAME).bin
@@ -430,10 +437,30 @@ ifndef KERNEL_LIB
 	rm -f libkernel.a
 endif
 	rm -f makeoffset.s offset.h
+else
+	-rm -f $(LIB).a $(ALL_OBJ) $(DEPS)
+	-rm -f \#* *~ *.o $(DEPDIR)/*.d $(CLEAN_FILES) check.timestamp
+	-rm -f $(OBJFILE) $(OBJNAME).syms $(OBJNAME).srec $(OBJNAME).bin
+	-rm -f kernel_cfg.timestamp $(CFG2_OUT_SRCS) cfg2_out.db
+	-rm -f offset.timestamp $(OFFSET_H)
+	-rm -f cfg1_out.syms cfg1_out.srec $(CFG1_OUT)
+	-rm -f cfg1_out.timestamp cfg1_out.c cfg1_out.db
+	-rm -rf $(TECSGENDIR)
+ifndef KERNEL_LIB
+	-rm -f libkernel.a
+endif
+	-rm -f makeoffset.s offset.h
+	-rm -f libkernel.a
+endif
 .PHONY: cleankernel
 cleankernel:
-	rm -f $(OFFSET_H) $(KERNEL_LIB_OBJS)
+ifneq ($(USE_TRUESTUDIO),true)
+	rm -rf $(OFFSET_H) $(KERNEL_LIB_OBJS)
 	rm -f $(KERNEL_LIB_OBJS:%.o=$(DEPDIR)/%.d)
+else
+	-rm -rf $(KERNEL_LIB_OBJS)
+	-rm -f makeoffset.s offset.h
+endif
 
 .PHONY: cleandep
 cleandep:
@@ -445,9 +472,13 @@ cleandep:
 	rm -f Makefile.depend
 
 .PHONY: realclean
+ifneq ($(USE_TRUESTUDIO),true)
 realclean: cleandep clean
 	rm -f $(REALCLEAN_FILES)
-
+else
+realclean: cleandep clean
+	-rm -f $(REALCLEAN_FILES)
+endif
 #
 #  コンフィギュレータが生成したファイルのコンパイルルールの定義
 #
@@ -460,8 +491,10 @@ ALL_CFG_ASMOBJS = $(CFG_ASMOBJS)
 $(ALL_CFG_COBJS): %.o: %.c
 	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(CFG_CFLAGS) $<
 
+ifneq ($(USE_TRUESTUDIO),true)
 $(ALL_CFG_COBJS:.o=.s): %.s: %.c
 	$(CC) -S $(CFLAGS) $(CFG_CFLAGS) $<
+endif
 
 $(ALL_CFG_ASMOBJS): %.o: %.S
 	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(CFG_CFLAGS) $<
@@ -520,8 +553,10 @@ KERNEL_ALL_COBJS = $(KERNEL_COBJS) $(KERNEL_AUX_COBJS)
 $(KERNEL_COBJS): %.o: %.c
 	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(KERNEL_CFLAGS) $<
 
+ifneq ($(USE_TRUESTUDIO),true)
 $(KERNEL_COBJS:.o=.s): %.s: %.c
 	$(CC) -S $(CFLAGS) $(KERNEL_CFLAGS) $<
+endif
 
 $(KERNEL_LCOBJS): %.o:
 	$(CC) -DTOPPERS_$(*F) -o $@ -c -MD -MP -MF $(DEPDIR)/$*.d \
@@ -536,8 +571,10 @@ $(KERNEL_ASMOBJS): %.o: %.S
 $(SYSSVC_COBJS): %.o: %.c
 	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(SYSSVC_CFLAGS) $<
 
+ifneq ($(USE_TRUESTUDIO),true)
 $(SYSSVC_COBJS:.o=.s): %.s: %.c
 	$(CC) -S $(CFLAGS) $(SYSSVC_CFLAGS) $<
+endif
 
 $(SYSSVC_ASMOBJS): %.o: %.S
 	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(SYSSVC_CFLAGS) $<
@@ -545,8 +582,10 @@ $(SYSSVC_ASMOBJS): %.o: %.S
 $(APPL_COBJS): %.o: %.c
 	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(APPL_CFLAGS) $<
 
+ifneq ($(USE_TRUESTUDIO),true)
 $(APPL_COBJS:.o=.s): %.s: %.c
 	$(CC) -S $(CFLAGS) $(APPL_CFLAGS) $<
+endif
 
 #$(APPL_CXXOBJS): %.o: %.cpp
 #	$(CXX) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(APPL_CFLAGS) $<
@@ -557,8 +596,12 @@ $(APPL_COBJS:.o=.s): %.s: %.c
 
 $(APPL_CXXOBJS): %.o: %.cpp
 	$(CXX) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(APPL_CXXFLAGS) $<
+
+ifneq ($(USE_TRUESTUDIO),true)
 $(APPL_CXXOBJS:.o=.s): %.s: %.cpp
 	$(CXX) -S $(CFLAGS) $(APPL_CXXFLAGS) $<
+endif
+
 $(APPL_ASMOBJS): %.o: %.S
 	$(CC) -c -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(APPL_CXXFLAGS) $<
 #

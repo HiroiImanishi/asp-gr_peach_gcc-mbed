@@ -1,0 +1,370 @@
+!SESSION 2018-11-19 22:29:39.857 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_121
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=ja_JP
+Command-line arguments:  -data /home/imanishi/Desktop/asp3-mbed_imanishi/row_asp3/target/gr_peach_gcc/truestudio -os linux -ws gtk -arch x86_64
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2018-11-19 22:29:41.911
+!MESSAGE Loading product manager
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2018-11-19 22:29:41.923
+!MESSAGE OS info: Linux, 4.4.0-139-generic, amd64
+
+!ENTRY TrueSTUDIO 1 0 2018-11-19 22:29:42.987
+!MESSAGE Target: ARM, Version: 8.0.0, Build date: 20170621-1519, Installation dir: /opt/Atollic_TrueSTUDIO_for_ARM_x86_64_8.0.0/ide/
+
+!ENTRY TrueSTUDIO 1 0 2018-11-19 22:29:42.988
+!MESSAGE Workspace: /home/imanishi/Desktop/asp3-mbed_imanishi/row_asp3/target/gr_peach_gcc/truestudio
+
+!ENTRY LicenseSystem 1 0 2018-11-19 22:29:42.992
+!MESSAGE Updated java.library.path to: /opt/Atollic_TrueSTUDIO_for_ARM_x86_64_8.0.0/ide:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+
+!ENTRY TrueSTUDIO License 1 0 2018-11-19 22:29:43.081
+!MESSAGE Valid local features found: 0
+
+!ENTRY TrueSTUDIO License 1 0 2018-11-19 22:29:43.081
+!MESSAGE Valid network features found: 0
+
+!ENTRY TrueSTUDIO License 1 0 2018-11-19 22:29:43.082
+!MESSAGE License system initialized in 30ms
+
+!ENTRY TrueSTUDIO 1 0 2018-11-19 22:29:43.087
+!MESSAGE License numbers: 0 []
+
+!ENTRY TrueSTUDIO 1 0 2018-11-19 22:29:43.087
+!MESSAGE This installation is running as LITE
+
+!ENTRY com.atollic.truestudio.integration.processorexpert 0 0 2018-11-19 22:29:44.736
+!MESSAGE Atollic TrueSTUDIO Processor Expert integration is up.
+
+!ENTRY org.eclipse.jface 2 0 2018-11-19 22:29:44.749
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2018-11-19 22:29:44.749
+!MESSAGE A conflict occurred for ALT+CTRL+T:
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.team.svn.ui.command.EditPropertiesCommand,Show Properties,
+		,
+		Category(org.eclipse.team.svn.ui.command.category,SVN,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@56cd5d76,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.tm.terminal.connector.local.command.launch,Open Local Terminal on Selection,
+		,
+		Category(org.eclipse.tm.terminal.view.ui.commands.category,Terminal Commands,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@77cd235b,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY edu.hawaii.ics.csdl.jupiter 2 0 2018-11-19 22:29:44.770
+!MESSAGE Could not register either review selection listener or part listener.
+
+!ENTRY edu.hawaii.ics.csdl.jupiter 1 0 2018-11-19 22:29:44.774
+!MESSAGE Code Review is up.
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2018-11-19 22:30:39.759
+!MESSAGE Unloading product manager
+!SESSION 2018-11-19 22:30:40.107 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_121
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=ja_JP
+Command-line arguments:  -data /home/imanishi/Desktop/asp3-mbed_imanishi/row_asp3/target/gr_peach_gcc/truestudio -os linux -ws gtk -arch x86_64
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2018-11-19 22:30:42.106
+!MESSAGE Loading product manager
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2018-11-19 22:30:42.117
+!MESSAGE OS info: Linux, 4.4.0-139-generic, amd64
+
+!ENTRY TrueSTUDIO 1 0 2018-11-19 22:30:43.256
+!MESSAGE Target: ARM, Version: 8.0.0, Build date: 20170621-1519, Installation dir: /opt/Atollic_TrueSTUDIO_for_ARM_x86_64_8.0.0/ide/
+
+!ENTRY TrueSTUDIO 1 0 2018-11-19 22:30:43.257
+!MESSAGE Workspace: /home/imanishi/Desktop/asp3-mbed_imanishi/row_asp3/target/gr_peach_gcc/truestudio
+
+!ENTRY LicenseSystem 1 0 2018-11-19 22:30:43.261
+!MESSAGE Updated java.library.path to: /opt/Atollic_TrueSTUDIO_for_ARM_x86_64_8.0.0/ide:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+
+!ENTRY TrueSTUDIO License 1 0 2018-11-19 22:30:43.342
+!MESSAGE Valid local features found: 0
+
+!ENTRY TrueSTUDIO License 1 0 2018-11-19 22:30:43.342
+!MESSAGE Valid network features found: 0
+
+!ENTRY TrueSTUDIO License 1 0 2018-11-19 22:30:43.343
+!MESSAGE License system initialized in 27ms
+
+!ENTRY TrueSTUDIO 1 0 2018-11-19 22:30:43.348
+!MESSAGE License numbers: 0 []
+
+!ENTRY TrueSTUDIO 1 0 2018-11-19 22:30:43.348
+!MESSAGE This installation is running as LITE
+
+!ENTRY org.eclipse.jface 2 0 2018-11-19 22:30:44.977
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2018-11-19 22:30:44.977
+!MESSAGE A conflict occurred for ALT+CTRL+T:
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.team.svn.ui.command.EditPropertiesCommand,Show Properties,
+		,
+		Category(org.eclipse.team.svn.ui.command.category,SVN,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@45e639ee,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.tm.terminal.connector.local.command.launch,Open Local Terminal on Selection,
+		,
+		Category(org.eclipse.tm.terminal.view.ui.commands.category,Terminal Commands,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@77f03916,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY com.atollic.truestudio.integration.processorexpert 0 0 2018-11-19 22:30:48.721
+!MESSAGE Atollic TrueSTUDIO Processor Expert integration is up.
+
+!ENTRY edu.hawaii.ics.csdl.jupiter 1 0 2018-11-19 22:30:48.749
+!MESSAGE Code Review is up.
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2018-11-19 22:31:36.376
+!MESSAGE Unloading product manager
+!SESSION 2018-11-19 22:31:36.693 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_121
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=ja_JP
+Command-line arguments:  -data /home/imanishi/Desktop/asp3-mbed_imanishi/row_asp3/target/gr_peach_gcc/truestudio -os linux -ws gtk -arch x86_64
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2018-11-19 22:31:38.622
+!MESSAGE Loading product manager
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2018-11-19 22:31:38.634
+!MESSAGE OS info: Linux, 4.4.0-139-generic, amd64
+
+!ENTRY TrueSTUDIO 1 0 2018-11-19 22:31:39.820
+!MESSAGE Target: ARM, Version: 8.0.0, Build date: 20170621-1519, Installation dir: /opt/Atollic_TrueSTUDIO_for_ARM_x86_64_8.0.0/ide/
+
+!ENTRY TrueSTUDIO 1 0 2018-11-19 22:31:39.820
+!MESSAGE Workspace: /home/imanishi/Desktop/asp3-mbed_imanishi/row_asp3/target/gr_peach_gcc/truestudio
+
+!ENTRY LicenseSystem 1 0 2018-11-19 22:31:39.827
+!MESSAGE Updated java.library.path to: /opt/Atollic_TrueSTUDIO_for_ARM_x86_64_8.0.0/ide:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+
+!ENTRY TrueSTUDIO License 1 0 2018-11-19 22:31:39.901
+!MESSAGE Valid local features found: 0
+
+!ENTRY TrueSTUDIO License 1 0 2018-11-19 22:31:39.901
+!MESSAGE Valid network features found: 0
+
+!ENTRY TrueSTUDIO License 1 0 2018-11-19 22:31:39.901
+!MESSAGE License system initialized in 9ms
+
+!ENTRY TrueSTUDIO 1 0 2018-11-19 22:31:39.906
+!MESSAGE License numbers: 0 []
+
+!ENTRY TrueSTUDIO 1 0 2018-11-19 22:31:39.906
+!MESSAGE This installation is running as LITE
+
+!ENTRY org.eclipse.jface 2 0 2018-11-19 22:31:41.581
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2018-11-19 22:31:41.581
+!MESSAGE A conflict occurred for ALT+CTRL+T:
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.team.svn.ui.command.EditPropertiesCommand,Show Properties,
+		,
+		Category(org.eclipse.team.svn.ui.command.category,SVN,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@389008d1,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.tm.terminal.connector.local.command.launch,Open Local Terminal on Selection,
+		,
+		Category(org.eclipse.tm.terminal.view.ui.commands.category,Terminal Commands,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@718f3088,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY com.atollic.truestudio.integration.processorexpert 0 0 2018-11-19 22:31:44.840
+!MESSAGE Atollic TrueSTUDIO Processor Expert integration is up.
+
+!ENTRY edu.hawaii.ics.csdl.jupiter 1 0 2018-11-19 22:31:44.861
+!MESSAGE Code Review is up.
+
+!ENTRY com.atollic.truestudio.mbs 2 0 2018-11-19 22:32:23.019
+!MESSAGE asp needs property 'com.atollic.truestudio.general.runtimelib.532004905' fixed. Fixing to 'com.atollic.truestudio.ld.general.clib.small'.
+
+!ENTRY com.atollic.truestudio.mbs 2 0 2018-11-19 22:32:23.023
+!MESSAGE asp needs property 'com.atollic.truestudio.toolchain_options.mcu.1524251703' fixed. Fixing to 'Cortex-A9'.
+
+!ENTRY com.atollic.truestudio.mbs 2 0 2018-11-19 22:32:23.023
+!MESSAGE asp needs property 'com.atollic.truestudio.toolchain_options.vendor.1898405346' fixed. Fixing to 'ARM'.
+
+!ENTRY com.atollic.truestudio.mbs 2 0 2018-11-19 22:32:23.309
+!MESSAGE asp needs property 'com.atollic.truestudio.general.runtimelib.349996693' fixed. Fixing to 'com.atollic.truestudio.ld.general.clib.small'.
+
+!ENTRY com.atollic.truestudio.mbs 2 0 2018-11-19 22:32:23.310
+!MESSAGE asp needs property 'com.atollic.truestudio.toolchain_options.mcu.798773278' fixed. Fixing to 'Cortex-A9'.
+
+!ENTRY com.atollic.truestudio.mbs 2 0 2018-11-19 22:32:23.310
+!MESSAGE asp needs property 'com.atollic.truestudio.toolchain_options.vendor.2011668825' fixed. Fixing to 'ARM'.
+
+!ENTRY org.eclipse.cdt.core 1 0 2018-11-19 22:32:25.453
+!MESSAGE Indexed 'asp' (26 sources, 61 headers) in 1.85 sec: 1,375 declarations; 3,075 references; 17 unresolved inclusions; 9 syntax errors; 244 unresolved names (5.2%)
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2018-11-19 22:34:11.038
+!MESSAGE Unloading product manager
+!SESSION 2018-11-19 22:34:15.506 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_121
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=ja_JP
+Framework arguments:  /home/imanishi/Desktop/asp3-mbed_imanishi/row_asp3/target/gr_peach_gcc/truestudio/asp/.cproject
+Command-line arguments:  -os linux -ws gtk -arch x86_64 /home/imanishi/Desktop/asp3-mbed_imanishi/row_asp3/target/gr_peach_gcc/truestudio/asp/.cproject
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2018-11-19 22:34:29.714
+!MESSAGE Loading product manager
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2018-11-19 22:34:29.808
+!MESSAGE OS info: Linux, 4.4.0-139-generic, amd64
+
+!ENTRY TrueSTUDIO 1 0 2018-11-19 22:34:31.164
+!MESSAGE Target: ARM, Version: 8.0.0, Build date: 20170621-1519, Installation dir: /opt/Atollic_TrueSTUDIO_for_ARM_x86_64_8.0.0/ide/
+
+!ENTRY TrueSTUDIO 1 0 2018-11-19 22:34:31.165
+!MESSAGE Workspace: /home/imanishi/Desktop/asp3-mbed_imanishi/row_asp3/target/gr_peach_gcc/truestudio
+
+!ENTRY LicenseSystem 1 0 2018-11-19 22:34:31.169
+!MESSAGE Updated java.library.path to: /opt/Atollic_TrueSTUDIO_for_ARM_x86_64_8.0.0/ide:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+
+!ENTRY TrueSTUDIO License 1 0 2018-11-19 22:34:31.233
+!MESSAGE Valid local features found: 0
+
+!ENTRY TrueSTUDIO License 1 0 2018-11-19 22:34:31.233
+!MESSAGE Valid network features found: 0
+
+!ENTRY TrueSTUDIO License 1 0 2018-11-19 22:34:31.234
+!MESSAGE License system initialized in 3ms
+
+!ENTRY TrueSTUDIO 1 0 2018-11-19 22:34:31.242
+!MESSAGE License numbers: 0 []
+
+!ENTRY TrueSTUDIO 1 0 2018-11-19 22:34:31.242
+!MESSAGE This installation is running as LITE
+
+!ENTRY org.eclipse.jface 2 0 2018-11-19 22:34:32.856
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2018-11-19 22:34:32.856
+!MESSAGE A conflict occurred for ALT+CTRL+T:
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.team.svn.ui.command.EditPropertiesCommand,Show Properties,
+		,
+		Category(org.eclipse.team.svn.ui.command.category,SVN,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@2cc61b3b,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.tm.terminal.connector.local.command.launch,Open Local Terminal on Selection,
+		,
+		Category(org.eclipse.tm.terminal.view.ui.commands.category,Terminal Commands,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@72e75786,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY com.atollic.truestudio.integration.processorexpert 0 0 2018-11-19 22:34:37.548
+!MESSAGE Atollic TrueSTUDIO Processor Expert integration is up.
+
+!ENTRY edu.hawaii.ics.csdl.jupiter 1 0 2018-11-19 22:34:37.589
+!MESSAGE Code Review is up.
+
+!ENTRY org.eclipse.cdt.core 1 0 2018-11-20 11:37:32.796
+!MESSAGE Indexed 'asp' (52 sources, 144 headers) in 1.12 sec: 4,387 declarations; 8,180 references; 17 unresolved inclusions; 45 syntax errors; 653 unresolved names (4.9%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2018-11-20 11:47:37.034
+!MESSAGE Indexed 'asp' (26 sources, 74 headers) in 0.585 sec: 1,486 declarations; 3,933 references; 11 unresolved inclusions; 9 syntax errors; 16 unresolved names (0.29%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2018-11-20 11:56:24.959
+!MESSAGE Indexed 'asp' (52 sources, 144 headers) in 0.798 sec: 4,387 declarations; 8,180 references; 17 unresolved inclusions; 45 syntax errors; 653 unresolved names (4.9%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2018-11-20 12:01:47.940
+!MESSAGE Indexed 'asp' (26 sources, 74 headers) in 0.485 sec: 1,486 declarations; 3,933 references; 11 unresolved inclusions; 9 syntax errors; 16 unresolved names (0.29%)
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2018-11-20 12:02:34.417
+!MESSAGE Unloading product manager
+!SESSION 2018-11-20 12:02:36.572 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_121
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=ja_JP
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2018-11-20 12:02:42.798
+!MESSAGE Loading product manager
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2018-11-20 12:02:42.905
+!MESSAGE OS info: Linux, 4.4.0-139-generic, amd64
+
+!ENTRY TrueSTUDIO 1 0 2018-11-20 12:02:44.219
+!MESSAGE Target: ARM, Version: 8.0.0, Build date: 20170621-1519, Installation dir: /opt/Atollic_TrueSTUDIO_for_ARM_x86_64_8.0.0/ide/
+
+!ENTRY TrueSTUDIO 1 0 2018-11-20 12:02:44.219
+!MESSAGE Workspace: /home/imanishi/Desktop/asp3-mbed_imanishi/row_asp3/target/gr_peach_gcc/truestudio
+
+!ENTRY LicenseSystem 1 0 2018-11-20 12:02:44.224
+!MESSAGE Updated java.library.path to: /opt/Atollic_TrueSTUDIO_for_ARM_x86_64_8.0.0/ide:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+
+!ENTRY TrueSTUDIO License 1 0 2018-11-20 12:02:44.312
+!MESSAGE Valid local features found: 0
+
+!ENTRY TrueSTUDIO License 1 0 2018-11-20 12:02:44.312
+!MESSAGE Valid network features found: 0
+
+!ENTRY TrueSTUDIO License 1 0 2018-11-20 12:02:44.312
+!MESSAGE License system initialized in 20ms
+
+!ENTRY TrueSTUDIO 1 0 2018-11-20 12:02:44.318
+!MESSAGE License numbers: 0 []
+
+!ENTRY TrueSTUDIO 1 0 2018-11-20 12:02:44.318
+!MESSAGE This installation is running as LITE
+
+!ENTRY org.eclipse.jface 2 0 2018-11-20 12:02:45.829
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2018-11-20 12:02:45.829
+!MESSAGE A conflict occurred for ALT+CTRL+T:
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.team.svn.ui.command.EditPropertiesCommand,Show Properties,
+		,
+		Category(org.eclipse.team.svn.ui.command.category,SVN,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@38ebc866,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.tm.terminal.connector.local.command.launch,Open Local Terminal on Selection,
+		,
+		Category(org.eclipse.tm.terminal.view.ui.commands.category,Terminal Commands,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@6adcf059,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY com.atollic.truestudio.integration.processorexpert 0 0 2018-11-20 12:02:50.379
+!MESSAGE Atollic TrueSTUDIO Processor Expert integration is up.
+
+!ENTRY edu.hawaii.ics.csdl.jupiter 1 0 2018-11-20 12:02:50.410
+!MESSAGE Code Review is up.
+
+!ENTRY org.eclipse.cdt.core 1 0 2018-11-20 12:03:42.285
+!MESSAGE Indexed 'asp' (26 sources, 74 headers) in 1.38 sec: 1,486 declarations; 3,933 references; 11 unresolved inclusions; 9 syntax errors; 16 unresolved names (0.29%)
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2018-11-21 11:05:54.231
+!MESSAGE Unloading product manager
