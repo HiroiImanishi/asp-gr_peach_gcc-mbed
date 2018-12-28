@@ -1,1 +1,0 @@
-cfg1_out.timestamp: ../../asp3/target/gr_peach_gcc/target_kernel.cfg blinky.cfg ../../asp3/target/gr_peach_gcc/target_timer.cfg ../../asp3/arch/arm_gcc/rza1/chip_timer.cfg ./gen/tecsgen.cfg ../../mbed-lib/common/common.cfg

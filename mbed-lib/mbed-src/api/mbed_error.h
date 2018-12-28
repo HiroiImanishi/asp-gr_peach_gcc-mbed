@@ -58,7 +58,7 @@ extern "C" {
 #endif
 
 void error(const char* format, ...);
-
+//void helloworld_imanishi(void);
 #ifdef __cplusplus
 }
 #endif

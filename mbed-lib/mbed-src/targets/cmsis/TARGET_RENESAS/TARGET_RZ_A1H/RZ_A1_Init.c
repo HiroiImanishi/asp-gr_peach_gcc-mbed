@@ -126,7 +126,9 @@ void RZ_A1_InitBus(void)
     /*************************************************************************/
     /* If need Pin Setting before run program, the setting will be wrote here*/
     /*************************************************************************/
+	//void (*funcptr)(void);
 
+	//helloworld_imanishi();
     return;
 }
 

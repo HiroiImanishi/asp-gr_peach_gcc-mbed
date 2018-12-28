@@ -56,8 +56,10 @@ chip_initialize(void)
 	/*
 	 *  キャッシュをディスエーブル
 	 */
-	arm_disable_cache();
-
+	//arm_disable_cache()をインクライン展開してみた
+	//arm_disable_cache();
+	arm_disable_icache();
+	arm_disable_dcache();
 	/*
 	 *  コア依存の初期化
 	 */

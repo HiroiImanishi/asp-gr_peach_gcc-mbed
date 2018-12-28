@@ -74,7 +74,7 @@ ALABEL(start)
 	 *  hardware_init_hookの呼出し（0でない場合）
 	 *
 	 *  ターゲットハードウェアに依存して必要な初期化処理がある場合は，
-	 *  hardware_init_hookという関数を用意する．
+	 *  hardware_init_hook(/target/gr_peach_gcc/gr_peach_rom.ldで0が代入されている)という関数を用意する．
 	 */
 	ldr		r0, =hardware_init_hook
 	cmp		r0, #0

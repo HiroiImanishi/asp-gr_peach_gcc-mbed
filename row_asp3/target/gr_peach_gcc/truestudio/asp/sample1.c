@@ -331,6 +331,7 @@ void main_task(intptr_t exinf)
 	 * をマクロ定義することで，1回目の測定結果を捨てて，2回目の測定結果
 	 * を使う．
 	 */
+#define TASK_LOOP 40000000
 #ifdef TASK_LOOP
 	task_loop = TASK_LOOP;
 #else /* TASK_LOOP */

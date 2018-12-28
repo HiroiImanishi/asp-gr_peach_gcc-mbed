@@ -52,7 +52,7 @@
  *  ターゲットを識別するためのマクロの定義
  */
 #define TOPPERS_GR_PEACH				/* システム略称 */
-/*#define TOPPERS_RZA1H		*/			/* RZ/A1H */
+#define TOPPERS_RZA1H		1			/* RZ/A1H */
 
 /*
  *  開発環境で共通な定義

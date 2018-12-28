@@ -214,7 +214,7 @@ extern void	tPutLogGRPeach_initialize(void);
 void
 target_initialize(void)
 {
-	extern void	*vector_table;		/* ベクタテーブル */
+	//extern void	*vector_table;		/* ベクタテーブル */
 
 	/*
 	 *  Low exception vectorsを使用
@@ -224,7 +224,7 @@ target_initialize(void)
 	/*
 	 *  チップ依存の初期化
 	 */
-	chip_initialize();
+	//chip_initialize();
 
 	/*
 	 *  低消費電力モードの初期化
@@ -239,12 +239,12 @@ target_initialize(void)
 	/*
 	 *  ベクタテーブルの設定
 	 */
-	CP15_WRITE_VBAR((uint32_t) &vector_table);
+	//CP15_WRITE_VBAR((uint32_t) &vector_table);
 
 	/*
 	 *  L2キャッシュコントローラ（PL310）の初期化
 	 */
-	pl310_initialize(0x0U, ~0x0U);
+	//pl310_initialize(0x0U, ~0x0U);
 
 	/*
 	 *  LEDを青色に点灯させる

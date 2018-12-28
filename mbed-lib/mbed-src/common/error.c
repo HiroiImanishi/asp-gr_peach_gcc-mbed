@@ -31,3 +31,8 @@ WEAK void error(const char* format, ...) {
 #endif
     exit(1);
 }
+/*
+void helloworld_imanishi(void){
+	printf("Hello,world,imanishi! Do your best!!\n");
+}
+*/

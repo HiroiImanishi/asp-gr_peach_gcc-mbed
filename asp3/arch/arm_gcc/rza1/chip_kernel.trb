@@ -12,7 +12,7 @@ else
   $INTNO_VALID = [ *(0..537) ]
 end
 $INHNO_VALID = $INTNO_VALID
-
+print "割込ハンドラの番号:INHNO_VALID:#{$INHNO_VALID}\n"
 #
 #  ターゲット定義の割込み要求ライン属性
 #
