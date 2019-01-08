@@ -1,31 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="WorkbenchPreferenceDialogSettings">
-		<item value="11" key="DIALOG_X_ORIGIN"/>
-		<item value="22" key="DIALOG_Y_ORIGIN"/>
+		<item value="164" key="DIALOG_X_ORIGIN"/>
+		<item value="78" key="DIALOG_Y_ORIGIN"/>
 	</section>
 	<section name="org.eclipse.ui.internal.QuickAccess">
-		<item value="130" key="dialogHeight"/>
-		<item value="230" key="dialogWidth"/>
+		<item value="82" key="dialogHeight"/>
+		<item value="430" key="dialogWidth"/>
 		<list key="textEntries">
+			<item value="1"/>
+			<item value="1"/>
 			<item value="2"/>
 			<item value="1"/>
 			<item value="1"/>
 			<item value="1"/>
 		</list>
 		<list key="orderedElements">
+			<item value="org.eclipse.cdt.ui.preferences.BuildSettings"/>
+			<item value="org.eclipse.cdt.debug.ui.CDebugPreferencePage"/>
 			<item value="org.eclipse.debug.ui.ExpressionView"/>
 			<item value="org.eclipse.ui.views.showView"/>
 			<item value="org.eclipse.ui.window.preferences(preferencePageId=com.micrium.plugin.eclipse.ucprobe.UcProbeProxy.ioimplementation.jlink.ui.properties.JLinkOptionsPage)"/>
 			<item value="org.eclipse.ui.window.preferences(preferencePageId=org.eclipse.cdt.dsf.gdb.ui.preferences.reversedebugpreferences)"/>
 		</list>
 		<list key="orderedProviders">
+			<item value="org.eclipse.ui.preferences"/>
+			<item value="org.eclipse.ui.preferences"/>
 			<item value="org.eclipse.e4.ui.parts"/>
 			<item value="org.eclipse.ui.commands"/>
 			<item value="org.eclipse.ui.commands"/>
 			<item value="org.eclipse.ui.commands"/>
 		</list>
 		<list key="textArray">
+			<item value="build"/>
+			<item value="debug "/>
 			<item value="expressions"/>
 			<item value="expression"/>
 			<item value="show view"/>

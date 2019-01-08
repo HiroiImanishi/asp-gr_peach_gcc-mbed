@@ -145,8 +145,9 @@ uint32_t IRQCount = sizeof IRQTable / 4;
 
 uint32_t InterruptHandlerRegister (IRQn_Type irq, IRQHandler handler)
 {
-	gr_peach_set_led(3,0);
-	
+//gr_peach_set_led(3,0);
+	gr_peach_set_led(12,1);
+	gr_peach_set_led(12,2);
     if (irq < IRQCount) {
         IRQTable[irq] = handler;
         return 0;

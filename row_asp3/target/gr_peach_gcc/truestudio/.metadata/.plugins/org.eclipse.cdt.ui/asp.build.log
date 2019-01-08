@@ -1,6 +1,0 @@
-22:34:30 **** Incremental Build of configuration ROM Execution for project asp ****
-make -i asp.bin EXECUTE_ON=ROM 
-make: 'asp.bin' は更新済みです.
-
-22:34:30 Build Finished (took 521ms)
-

@@ -5,11 +5,12 @@
 
 # 
 #  使用できる割込み番号とそれに対応する割込みハンドラ番号
-# 
+#  TOPPERS_RZA1Hが未定義の場合はもともと0...537
+#
 if $TOPPERS_RZA1H
   $INTNO_VALID = [ *(0..586) ]
 else
-  $INTNO_VALID = [ *(0..537) ]
+  $INTNO_VALID = [ *(0..586) ]
 end
 $INHNO_VALID = $INTNO_VALID
 print "割込ハンドラの番号:INHNO_VALID:#{$INHNO_VALID}\n"

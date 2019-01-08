@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="target_kernel_impl" key="selection"/>
+		<item value="chip_kernel" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="target_kernel_impl"/>
-			<item value="asp3"/>
-			<item value="tecs"/>
-			<item value="task_loop"/>
-			<item value="TASK"/>
-			<item value="tskid"/>
-			<item value="execute"/>
-			<item value="rom"/>
+			<item value="chip_kernel"/>
+			<item value="chip_kernel."/>
+			<item value="chip_kernel.t"/>
+			<item value="chip_kernel.trb"/>
+			<item value="gr_peach_gcc"/>
+			<item value="target_stddef"/>
+			<item value="TOPPERS_RZA1"/>
+			<item value="TOPPERS_RZA1H"/>
 		</list>
 		<list key="replacehistory">
 		</list>
@@ -24,7 +24,7 @@
 		<item value="318" key="DIALOG_WIDTH"/>
 		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
 		<item value="386" key="DIALOG_HEIGHT"/>
-		<item value="1222" key="DIALOG_X_ORIGIN"/>
-		<item value="458" key="DIALOG_Y_ORIGIN"/>
+		<item value="1203" key="DIALOG_X_ORIGIN"/>
+		<item value="449" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

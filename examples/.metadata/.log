@@ -1,0 +1,69 @@
+!SESSION 2019-01-04 19:46:04.281 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_121
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=ja_JP
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2019-01-04 19:46:17.741
+!MESSAGE Loading product manager
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2019-01-04 19:46:17.755
+!MESSAGE OS info: Linux, 4.4.0-141-generic, amd64
+
+!ENTRY TrueSTUDIO 1 0 2019-01-04 19:46:18.831
+!MESSAGE Target: ARM, Version: 8.0.0, Build date: 20170621-1519, Installation dir: /opt/Atollic_TrueSTUDIO_for_ARM_x86_64_8.0.0/ide/
+
+!ENTRY TrueSTUDIO 1 0 2019-01-04 19:46:18.831
+!MESSAGE Workspace: /home/imanishi/Desktop/asp3-mbed_imanishi/examples
+
+!ENTRY LicenseSystem 1 0 2019-01-04 19:46:18.836
+!MESSAGE Updated java.library.path to: /opt/Atollic_TrueSTUDIO_for_ARM_x86_64_8.0.0/ide:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+
+!ENTRY TrueSTUDIO License 1 0 2019-01-04 19:46:18.912
+!MESSAGE Valid local features found: 0
+
+!ENTRY TrueSTUDIO License 1 0 2019-01-04 19:46:18.912
+!MESSAGE Valid network features found: 0
+
+!ENTRY TrueSTUDIO License 1 0 2019-01-04 19:46:18.912
+!MESSAGE License system initialized in 17ms
+
+!ENTRY TrueSTUDIO 1 0 2019-01-04 19:46:18.919
+!MESSAGE License numbers: 0 []
+
+!ENTRY TrueSTUDIO 1 0 2019-01-04 19:46:18.919
+!MESSAGE This installation is running as LITE
+
+!ENTRY com.atollic.truestudio.integration.processorexpert 0 0 2019-01-04 19:46:20.611
+!MESSAGE Atollic TrueSTUDIO Processor Expert integration is up.
+
+!ENTRY edu.hawaii.ics.csdl.jupiter 2 0 2019-01-04 19:46:20.640
+!MESSAGE Could not register either review selection listener or part listener.
+
+!ENTRY org.eclipse.jface 2 0 2019-01-04 19:46:20.643
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2019-01-04 19:46:20.643
+!MESSAGE A conflict occurred for ALT+CTRL+T:
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.team.svn.ui.command.EditPropertiesCommand,Show Properties,
+		,
+		Category(org.eclipse.team.svn.ui.command.category,SVN,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@4ec8d9b2,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.tm.terminal.connector.local.command.launch,Open Local Terminal on Selection,
+		,
+		Category(org.eclipse.tm.terminal.view.ui.commands.category,Terminal Commands,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@57b63253,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY edu.hawaii.ics.csdl.jupiter 1 0 2019-01-04 19:46:20.644
+!MESSAGE Code Review is up.
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2019-01-04 19:49:34.151
+!MESSAGE Unloading product manager
